@@ -30,7 +30,7 @@ nmap -sV --version-intensity 5 192.168.1.1 // service detection agressive. 0 is 
 locate nse | grep script
 
 
-  == WEB DIRECTORY ENUMERATION ==
+== WEB DIRECTORY ENUMERATION ==
 ## searches for known files, like robots.txt, .htaccess, .htpasswd, etc
 nmap --script http-enum 192.168.10.55  
 
@@ -178,8 +178,6 @@ echo $PATH
 ## chanage $PATH. As in add something to the PATH
 export PATH=/some/path  //redefineste path-ul 
 
-
-
 == WEB APPLICATION SCANNERS ==
 ## scan Joomla
 joomscan -u http://192.168.230.150:8081
@@ -193,13 +191,50 @@ nikto -h x.x.x.x
   == SQL ==
 sqlmap -u "http://192.168.56.129/?page=login" -a --level=5
 
-  == SMB == 
+  == SMB NETBIOS== 
+nmap -v -p 139,445 -oG smb.txt 192.168.11.200-254
+nbtscan -r 192.168.11.0/24
+
+## NetBIOS NullSession enumeration
+## This  feature  exists  to  allow  unauthenticated  machines  to  obtain  browse  lists  from  other  
+## Microsoft   servers. Enum4linux is a wrapper  built on top of smbclient,rpcclient, net and nmblookup
+./enum4linux -a 192.168.1.1
+
+## NMAP SMB scripts
+nmap --script smb-* 192.168.10.55 
+##  ls -lh /usr/share/nmap/scripts/smb*	
+smb-brute.nse
+smb-enum-domains.nse
+smb-enum-groups.nse
+smb-enum-processes.nse
+smb-enum-sessions.nse
+smb-enum-shares.nse
+smb-enum-users.nse
+smb-flood.nse
+smb-ls.nse
+smb-mbenum.nse
+smb-os-discovery.nse
+smb-print-text.nse
+smb-psexec.nse
+smb-security-mode.nse
+smb-server-stats.nse
+smb-system-info.nse
+smb-vuln-conficker.nse
+smb-vuln-cve2009-3103.nse
+smb-vuln-ms06-025.nse
+smb-vuln-ms07-029.nse
+smb-vuln-ms08-067.nse
+smb-vuln-ms10-054.nse
+smb-vuln-ms10-061.nse
+smb-vuln-regsvc-dos.nse
+smbv2-enabled.nse
+
 #mount SMB (Netbios/Windows) shares in Linux
 smbclient -L \\WIN7\ -I 192.168.13.218
 smbclient -L \\WIN7\ADMIN$  -I 192.168.13.218
 smbclient -L \\WIN7\C$ -I 192.168.13.218
 smbclient -L \\WIN7\IPC$ -I 192.168.13.218
-smbclient '\\192.168.13.236\Bob Docs' -o user=root,pass=root,workgroup=BOB
+smbclient '\\192.168.13.236\some-share' -o user=root,pass=root,workgroup=BOB
 
 #mount MSB shares in Windows (via cmd)
 net use X: \\<server>\<sharename> /USER:<domain>\<username> <password> /PERSISTENT:YES
