@@ -1,0 +1,93 @@
+
+  == DOMAIN info: ==
+whois domain.com
+whois x.x.x.x
+http://netcraft.com/       //domain and hosting information
+https://archive.org/web/   //Wayback machine
+
+  == WEB DIRECTORY ENUMERATION ==
+## searches for known files, like robots.txt, .htaccess, .htpasswd, etc
+nmap --script http-enum 192.168.10.55  
+
+## brute force a directory with custom wordlists
+nmap -p80 --script=http-brute --script-args 'http-brute.path=/printers/, userdb=/usr/share/wordlists/metasploit/http_default_users.txt, passdb=/usr/share/wordlists/rockyou.txt' 192.168.x.x   
+
+## HTTP brute force a protected directory. Auditing against http basic, digest and ntlm authentication.
+## This script uses the unpwdb and brute libraries to perform password guessing
+nmap -p80 --script http-brute --script-args http-brute.path=/printers/ 192.168.x.x
+
+## Discovers hostnames that resolve to the target's IP address by querying the online database at www.bfk.de
+nmap --script -http-enum --script-args http-enum.basepath='pub/' 192.168.x.x
+
+## Files and folders in a web root directory.
+## /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt
+dirb http://192.168.x.x
+
+## WEB page titles from a subnet of IPs
+nmap --script http-title -sV -p 80 192.168.1.0/24  
+
+## WEBPAGE banners
+root@kali:~# nc -n -vv 192.168.13.230 80 
+HEAD / HTTP/1.1      // or 1.0
+HEAD   ### <address>Apache/2.2.22 (Ubuntu) Server at xyz.com Port 80</address>
+GET /index
+
+#connect to a UDP port 
+nc -u localhost 161
+
+  == DNS enumeration ==
+dnsrecon -r 192.168.13.200-192.168.13.254 -n 192.168.13.220   //reverse lookup. dns server is -n
+dnsrecon -d acme.local -D /usr/share/golismero/wordlist/dns/dnsrecon.txt -t brt  //bruteforce the acme.local domain for domains and subdomains
+dnsrecon -a -d thinc.local -n 192.168.13.220  ## trying zone transfer. -n is the DNS server
+
+## find DNS (A) records by trying a list of common sub-domains from a wordlist.
+nmap -p 80 --script dns-brute.nse domain.com
+python dnscan.py -d domain.com -w ./subdomains-10000.txt
+
+
+  == WINDOWS ==
+# search for files
+C:\> dir /s /b network-secret.txt
+dir /q calc.exe //display ownership
+
+# Find all listening ports and filer by string
+netstat -aon | find /i "listening" | findstr 127.0.0.1
+
+#enumerate Windows services
+tasklist /svc
+
+# Find all listening ports and show the process and PID too
+protocol, PID, port, service name, service, state of the connection. Use "| findstr" to filter.
+netstat -abno
+
+# Queries the configuration information for a specified service.
+C:\WINDOWS\system32>sc qc alg
+sc qc alg
+[SC] GetServiceConfig SUCCESS
+
+SERVICE_NAME: alg
+        TYPE               : 10  WIN32_OWN_PROCESS 
+        START_TYPE         : 3   DEMAND_START
+        ERROR_CONTROL      : 1   NORMAL
+        BINARY_PATH_NAME   : C:\WINDOWS\System32\alg.exe  
+        LOAD_ORDER_GROUP   :   
+        TAG                : 0  
+        DISPLAY_NAME       : Application Layer Gateway Service  
+        DEPENDENCIES       :   
+        SERVICE_START_NAME : NT AUTHORITY\LocalService  
+----------
+
+
+#list security policy
+net accounts
+
+#list users
+net users
+WMIC /NODE: "BOB" COMPUTERSYSTEM GET USERNAME   ##needs admin  
+
+  == LINUX ==
+# search for files
+find / -name "network-secret.txt"
+locate "network-secret.txt"
+
+
