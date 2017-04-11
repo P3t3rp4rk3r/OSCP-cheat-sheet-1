@@ -8,6 +8,28 @@ whois x.x.x.x
 http://netcraft.com/       //domain and hosting information
 https://archive.org/web/   //Wayback machine
 
+== PORT SCANNING ==
+## nmap -sS is the default scanning mode // TCP SYN SCAN
+nmap -iL list-of-ips.txt    //scan the targets from the text file
+nmap 192.168.1.1 /24   //scan a subnet
+nmap -F 192.168.1.1   //scan most common 100 ports. Fast.
+nmap -p 100-200 192.168.1.1   // scan a range of ports
+nmap -p- 192.168.1.1    // scan all ports
+nmap -Pn -F 192.168.1.1   //scan selected ports and ignore discovery
+
+## NMAP Service and OS Detection
+nmap -A 192.168.1.1   // Os and services
+nmap -sV 192.168.1.1    // service detection
+nmap -sV --version-intensity 5 192.168.1.1 // service detection agressive. 0 is less agressive
+
+## Other NMAP parameters
+-oN outputfile.txt    // save as txt
+--script=ssl-heartbleed // checks for heartbleed
+
+## Locate NSE scripts
+locate nse | grep script
+
+
   == WEB DIRECTORY ENUMERATION ==
 ## searches for known files, like robots.txt, .htaccess, .htpasswd, etc
 nmap --script http-enum 192.168.10.55  
@@ -32,6 +54,9 @@ nmap --script -http-enum --script-args http-enum.basepath='pub/' 192.168.x.x
 ## Files and folders in a web root directory.
 ## /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt
 dirb http://192.168.x.x
+
+## WEB page headers
+nmap --script=http-headers 192.168.1.0/24
 
 ## WEB page titles from a subnet of IPs
 nmap --script http-title -sV -p 80 192.168.1.0/24  
@@ -134,6 +159,9 @@ routeprint
 
 
   == LINUX ==
+## Use LinuxEnum.sh script
+./LinEnum.sh
+
 # search for files
 find / -name "network-secret.txt"
 locate "network-secret.txt"
@@ -149,6 +177,8 @@ echo $PATH
 
 ## chanage $PATH. As in add something to the PATH
 export PATH=/some/path  //redefineste path-ul 
+
+
 
 == WEB APPLICATION SCANNERS ==
 ## scan Joomla
@@ -179,6 +209,8 @@ net use X: \\<server>\<sharename> /USER:<domain>\<username> <password> /PERSISTE
 http://192.168.56.129/?page=upload   // original page
 http://192.168.0.105/?page=php://filter/convert.base64-encode/resource=upload
 curl http://192.168.0.105/?page=php://filter/convert.base64-encode/resource=upload
+-- The result needs to be decoded from Base64
+
  
  == STENOGRAPHICS / EXIF ==
 exiftool somephoto.png
