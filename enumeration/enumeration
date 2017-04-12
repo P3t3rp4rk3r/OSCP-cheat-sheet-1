@@ -168,6 +168,24 @@ locate "network-secret.txt"
 
 # Search for specific strings inside a file
 strings ./*.txt | grep password
+grep -l -i pass /var/log/*.log 2>/dev/null
+find / -maxdepth 10 -name *.conf -type f | grep -Hn pass; 2>/dev/null // searches for the string 'password' and output the line number
+find / -maxdepth 10 -name *etc* -type f | grep -Hn pass; 2>/dev/null  //as above, but in *etc*
+
+  ## ls commaands
+find / -perm -4000 -type f 2>/dev/null      //Find SUID files
+find / -uid 0 -perm -4000 -type f 2>/dev/null   //Find SUID files owned by root
+find / -perm -2000 -type f 2>/dev/null      // Find files with GUID bit set
+find / -perm -2 -type f 2>/dev/null         //Find world-writable files
+find / -perm -2 -type d 2>/dev/null         //Find word-writable directories
+find /home –name .rhosts -print 2>/dev/null    //Find rhost config files
+ls -ahlR /root/      //list files recursively
+
+  ## Service information
+ps aux | grep root    // View services running as root
+cat /etc/inetd.conf     // List services managed by inetd
+cat /etc/xinetd.conf    // As above for xinetd
+
 
 ## Find out what Linux interpreter you are using
 ps -p $$
