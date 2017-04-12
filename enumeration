@@ -35,11 +35,11 @@ locate nse | grep script
 nmap --script http-enum 192.168.10.55  
 
 ## grab robots.txt and filter it
-curl -s 192.168.56.102/robots.txt | grep Disallow | sed 's/Disallow: //'
+curl -s http://192.168.56.102/robots.txt | grep Disallow | sed 's/Disallow: //'
 
 ## check which page is accessible to us (200 OK)
-for i in $(curl -s 192.168.56.102/robots.txt | grep Disallow | sed 's/Disallow: //') ; \
-do RESULT=$(curl -s -I 192.168.56.102"$i" | grep "200 OK") ; echo -e "$i $RESULT\r" ; done
+for i in $(curl -s http://192.168.56.102/robots.txt | grep Disallow | sed 's/Disallow: //') ; \
+do RESULT=$(curl -s -I http://192.168.56.102"$i" | grep "200 OK") ; echo -e "$i $RESULT\r" ; done
 
 ## brute force a directory with custom wordlists
 nmap -p80 --script=http-brute --script-args 'http-brute.path=/printers/, userdb=/usr/share/wordlists/metasploit/http_default_users.txt, passdb=/usr/share/wordlists/rockyou.txt' 192.168.x.x   
