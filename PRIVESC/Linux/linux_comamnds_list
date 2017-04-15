@@ -1,34 +1,54 @@
 Linux Enumeration for Escalation Root Access
 
-Command Result
-uname -a Print all available system information
-uname -r Kernel release
-uname -n System hostname
-hostname As above
-uname -m Linux kernel architecture (32 or 64 bit)
-cat /proc/version Kernel information
-cat /etc/*-release Distribution information
-cat /etc/issue As above
+  == Operating System ==
+## What's the distribution type? What version?
+cat /etc/issue
+cat /etc/*-release
+cat /etc/lsb-release
+cat /etc/redhat-release
+   
+uname -n   // System hostname
+hostname // As above
+
+## What's the Kernel version? Is it 64-bit?
+cat /proc/version   
+uname -a
+uname -r  // Kernel release
+uname -mrs 
+rpm -q kernel 
+dmesg | grep Linux
+ls /boot | grep vmlinuz-
+
 cat /proc/cpuinfo CPU information
 df -a File system information
 
-Users & Groups:
+  == What can be learnt from the environmental variables? ==
+cat /etc/profile
+cat /etc/bashrc
+cat ~/.bash_profile
+cat ~/.bashrc
+cat ~/.bash_logout
+env
+set
 
-Command Result
-cat /etc/passwd List all users on the system
-cat /etc/group List all groups on the system
-cat /etc/shadow Show user hashes – Privileged command
+  == Is there a printer? ==
+lpstat -a
+
+  == Users & Groups: == 
+cat /etc/passwd  
+cat /etc/group   // List all groups on the system
+cat /etc/shadow  // Show user hashes – Privileged command
 grep -v -E "^#" /etc/passwd | awk -F: '$3 == 0 { print $1}' List all super user accounts
-finger Users currently logged in
-pinky As above
-users As above
-who -a As above
-w Who is currently logged in and what they’re doing
-last Listing of last logged on users
-lastlog Information on when all users last logged in
-lastlog –u %username% Information on when the specified user last logged in
+finger   // Users currently logged in
+pinky   // As above
+users  // As above
+who -a // As above
+w   // Who is currently logged in and what they’re doing
+last   // Listing of last logged on users
+lastlog   // Information on when all users last logged in
+lastlog –u %username% // Information on when the specified user last logged in
 
-User & Privilege Information:
+  == User & Privilege Information: ==
 
 Command Result
 whoami Current username
