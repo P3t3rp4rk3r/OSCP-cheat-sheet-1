@@ -1,8 +1,0 @@
-  ## do a select and export to csv
- SELECT password,salt FROM fos_user INTO OUTFILE '/tmp/shodan.csv' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';
- 
- 
-  ## import sql file to a new database from the SQL server directly.
- CREATE DATABASE test;
- use test;
- SET autocommit=0 ; source /root/Downloads/dump.sql ; COMMIT ;
