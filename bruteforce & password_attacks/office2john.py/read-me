@@ -1,0 +1,27 @@
+
+python ./office2john.py ./filename.docx
+
+//filename being the protected document. 
+After a second you will see the output like below:
+
+root@k22:~/Downloads/crackers/Microsoft Office RC40 cracker# python ./office2john.py ../file1.docx 
+file1.docx:$office$*2007*20*128*16*75a4db9cc30c376ad9e05505b1afa100*d777bd01af371bbcc21139e34119b832*1c091f9e02d549f98073ed060429a4649d2c0d6b
+
+ oclHashcat -a 0 -m 9400 -status -o found.txt hash.txt pass.txt
+//use -resume to restart a paused job
+
+
+Office 97-03(MD5+RC4,oldoffice$0,oldoffice$1): flag -m 9700 
+Office 97-03(MD5+RC4,collider-mode#1): flag -m 9710
+Office 97-03(MD5+RC4,collider-mode#2): flag -m 9720
+Office 97-03(SHA1+RC4,oldoffice$3,oldoffice$4): flag -m 9800
+Office 97-03(SHA1+RC4,collider-mode#1): flag -m 9810
+Office 97-03(SHA1+RC4,collider-mode#2): flag -m 9820
+Office 2007: flag -m 9400 
+Office 2010: flag -m 9500
+Office 2013: flag -m 9600
+
+
+http://blog.infosecsee.com/2015/02/cracking-password-protected-word-excel.html
+http://pentestcorner.com/cracking-microsoft-office-97-03-2007-2010-2013-password-hashes-with-hashcat/
+

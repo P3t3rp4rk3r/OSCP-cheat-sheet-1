@@ -1,0 +1,8 @@
+1. Working notes and screenshots into KeepNote
+2. Write the final Pentest Report (including my tools, TTPs, finding) from the beginning of labs. Not at the END!
+3. Labs report will be based on Offensive Security Penetration Test Report for Internal Lab and Exam https://www.offensive-security.com/pwk-online/PWKv1-REPORT.doc
+3. Write new chapter in final Pentest Report after pwning of the machine (based on working notes from KeepNote)
+4. Collect nmap scan in the nmap format
+5. Collect network data in XLS spreadsheet
+6. Collect data in MSF database (db_nmap)
+7. Draw network map in Armitage based on MSF database (or Maltego? Sparta?)
