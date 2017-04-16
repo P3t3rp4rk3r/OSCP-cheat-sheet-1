@@ -27,7 +27,7 @@ nmap -Pn -F 192.168.1.1   //scan selected ports and ignore discovery
 -oN outputfile.txt    // save as txt
 --script=ssl-heartbleed // checks for heartbleed
 
-    == Unicorn scans ==
+    == Unicorn scans ==  // port scanner
 us -H -msf -Iv 192.168.56.101 -p 1-65535
 us -H -mU -Iv 192.168.56.101 -p 1-65535
 ## -H resolve hostnames during the reporting phase
@@ -37,6 +37,10 @@ us -H -mU -Iv 192.168.56.101 -p 1-65535
 ## Locate NSE scripts
 locate nse | grep script
 
+   == HTTP finderprinting ==
+wget http://www.net-square.com/_assets/httprint_linux_301.zip && unzip httprint_linux_301.zip
+cd httprint_301/linux/
+./httprint -h http://IP -s signatures.txt
 
 == WEB DIRECTORY ENUMERATION ==
 ## searches for known files, like robots.txt, .htaccess, .htpasswd, etc
@@ -212,7 +216,12 @@ joomscan -u http://192.168.230.150:8081
 wpscan domain.com
 
 ## scan a web appliction with nikto
-nikto -h x.x.x.x
+nikto -C all -h http://IP
+
+## scan web apps
+skipfish -m 5 -LY -S /usr/share/skipfish/dictionaries/complete.wl -o ./skipfish2 -u http://IP
+skipfish -o 202 http://192.168.1.202/wordpress   ## Using the given directory for output (-o 202) , scan the web application URL 
+## (http://192.168.1.202/wordpress):
 
   == SQL ==
 sqlmap -u "http://192.168.56.129/?page=login" -a --level=5
