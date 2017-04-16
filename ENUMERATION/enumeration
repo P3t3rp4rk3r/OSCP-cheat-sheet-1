@@ -8,6 +8,12 @@ whois x.x.x.x
 http://netcraft.com/       //domain and hosting information
 https://archive.org/web/   //Wayback machine
 
+## NMAP Service and OS Detection
+nmap -A 192.168.1.1   // Os and services
+nmap -sV 192.168.1.1    // service detection
+nmap -sV --version-intensity 5 192.168.1.1 // service detection agressive. 0 is less agressive
+xprobe2 -v -p tcp:80:open IP
+
 == PORT SCANNING ==
 ## nmap -sS is the default scanning mode // TCP SYN SCAN
 nmap -iL list-of-ips.txt    //scan the targets from the text file
@@ -17,14 +23,16 @@ nmap -p 100-200 192.168.1.1   // scan a range of ports
 nmap -p- 192.168.1.1    // scan all ports
 nmap -Pn -F 192.168.1.1   //scan selected ports and ignore discovery
 
-## NMAP Service and OS Detection
-nmap -A 192.168.1.1   // Os and services
-nmap -sV 192.168.1.1    // service detection
-nmap -sV --version-intensity 5 192.168.1.1 // service detection agressive. 0 is less agressive
-
 ## Other NMAP parameters
 -oN outputfile.txt    // save as txt
 --script=ssl-heartbleed // checks for heartbleed
+
+    == Unicorn scans ==
+us -H -msf -Iv 192.168.56.101 -p 1-65535
+us -H -mU -Iv 192.168.56.101 -p 1-65535
+## -H resolve hostnames during the reporting phase
+## -m scan mode (sf - tcp, U - udp)
+## -Iv - verbose
 
 ## Locate NSE scripts
 locate nse | grep script
@@ -61,7 +69,7 @@ nmap --script=http-headers 192.168.1.0/24
 ## WEB page titles from a subnet of IPs
 nmap --script http-title -sV -p 80 192.168.1.0/24  
 
-## WEBPAGE banners
+## Grab banners
 root@kali:~# nc -n -vv 192.168.13.230 80 
 HEAD / HTTP/1.1      // or 1.0
 HEAD   ### <address>Apache/2.2.22 (Ubuntu) Server at xyz.com Port 80</address>
@@ -210,8 +218,13 @@ nikto -h x.x.x.x
 sqlmap -u "http://192.168.56.129/?page=login" -a --level=5
 
   == SMB NETBIOS== 
+enum4linux target
 nmap -v -p 139,445 -oG smb.txt 192.168.11.200-254
 nbtscan -r 192.168.11.0/24
+nmblookup -A target
+smbclient //MOUNT/share -I target -N
+rpcclient -U "" target
+
 
 ## NetBIOS NullSession enumeration
 ## This  feature  exists  to  allow  unauthenticated  machines  to  obtain  browse  lists  from  other  
@@ -256,6 +269,13 @@ smbclient '\\192.168.13.236\some-share' -o user=root,pass=root,workgroup=BOB
 
 #mount MSB shares in Windows (via cmd)
 net use X: \\<server>\<sharename> /USER:<domain>\<username> <password> /PERSISTENT:YES
+
+
+
+    == SNMP ==
+snmpget -v 1 -c public IP
+snmpwalk -v 1 -c public IP
+snmpbulkwalk -v2c -c public -Cn0 -Cr10 IP
 
  == PHP ==
 ## Read PHP source code with php://filter
