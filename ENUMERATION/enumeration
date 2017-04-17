@@ -9,7 +9,7 @@ http://netcraft.com/       //domain and hosting information
 https://archive.org/web/   //Wayback machine
 
 ## NMAP Service and OS Detection
-nmap -A 192.168.1.1   // Os and services
+nmap -sTU -A 192.168.1.1   // Os and services for TCP and UDP
 nmap -sV 192.168.1.1    // service detection
 nmap -sV --version-intensity 5 192.168.1.1 // service detection agressive. 0 is less agressive
 xprobe2 -v -p tcp:80:open IP
@@ -90,6 +90,7 @@ nc -u localhost 161
 dnsrecon -r 192.168.13.200-192.168.13.254 -n 192.168.13.220   //reverse lookup. dns server is -n
 dnsrecon -d acme.local -D /usr/share/golismero/wordlist/dns/dnsrecon.txt -t brt  //bruteforce the acme.local domain for domains and subdomains
 dnsrecon -a -d thinc.local -n 192.168.13.220  ## trying zone transfer. -n is the DNS server
+nmap -sU -p 22 --script=*dns* 192.168.1.200
 
 ## find DNS (A) records by trying a list of common sub-domains from a wordlist.
 nmap -p 80 --script dns-brute.nse domain.com
@@ -280,16 +281,18 @@ smbclient '\\192.168.13.236\some-share' -o user=root,pass=root,workgroup=BOB
 #mount MSB shares in Windows (via cmd)
 net use X: \\<server>\<sharename> /USER:<domain>\<username> <password> /PERSISTENT:YES
 
-
-
     == SNMP ==
 nmap -sU -p 161 --script=*snmp* 192.168.1.200
 xprobe2 -v -p udp:161:open 192.168.1.200
+
+msf >  use auxiliary/scanner/snmp/snmp_login
+msf > use auxiliary/scanner/snmp/snmp_enum
+
 snmp-check -t 192.168.1.2 -c public
 snmpget -v 1 -c public IP
 snmpwalk -v 1 -c public IP
 snmpbulkwalk -v2c -c public -Cn0 -Cr10 IP
-onesixtyone -c ./snmp-cummunities.txt 192.168.1.200  // scan for used communities
+onesixtyone -c /usr/share/wordlists/dirb/small.txt 192.168.1.200  // find communities with bruteforce
 
  == PHP ==
 ## Read PHP source code with php://filter
