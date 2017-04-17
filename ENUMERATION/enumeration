@@ -28,10 +28,11 @@ nmap -Pn -F 192.168.1.1   //scan selected ports and ignore discovery
 --script=ssl-heartbleed // checks for heartbleed
 
     == Unicorn scans ==  // port scanner
-us -H -msf -Iv 192.168.56.101 -p 1-65535
-us -H -mU -Iv 192.168.56.101 -p 1-65535
-## -H resolve hostnames during the reporting phase
-## -m scan mode (sf - tcp, U - udp)
+us -H -msf -Iv 192.168.56.101 -p 1-65535  ## TCP connect SYN scan
+us -H -mU -Iv 192.168.56.101 -p 1-65535   ## UDP scan
+
+## -H = resolve hostnames 
+## -m = scan mode (sf - tcp, U - udp)
 ## -Iv - verbose
 
 ## Locate NSE scripts
@@ -282,9 +283,13 @@ net use X: \\<server>\<sharename> /USER:<domain>\<username> <password> /PERSISTE
 
 
     == SNMP ==
+nmap -sU -p 161 --script=*snmp* 192.168.1.200
+xprobe2 -v -p udp:161:open 192.168.1.200
+snmp-check -t 192.168.1.2 -c public
 snmpget -v 1 -c public IP
 snmpwalk -v 1 -c public IP
 snmpbulkwalk -v2c -c public -Cn0 -Cr10 IP
+onesixtyone -c ./snmp-cummunities.txt 192.168.1.200  // scan for used communities
 
  == PHP ==
 ## Read PHP source code with php://filter
