@@ -405,6 +405,7 @@ route
     == Is packet sniffing possible? What can be seen? Listen to live traffic ==
 # tcpdump tcp dst [ip] [port] and tcp dst [ip] [port]
 tcpdump tcp dst 192.168.1.7 80 and tcp dst 10.2.2.222 21
+tcpdump -n dst host 192.168.1.5 -vvv -n -w file.cap
 
 
     == Have you got a shell? Can you interact with the system? ==
