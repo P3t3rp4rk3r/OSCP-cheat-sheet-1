@@ -31,6 +31,9 @@ hydra -s 25 -v -V -l root@ucal.local -P /usr/share/wordlists/rockyou.txt -t 1 -w
 -w waittime for responses (32s) / between connects per thread
 -f exit after the first found login/password pair
 
+## MySql, Oracle, PostgreSQL, SQLlite, MS-Sql bruteforcer and database browser
+hexorbase
+
   ## Generate a wordlist from a webpage
 cewl www.megacorpone.com -m 6 -w /root/newfilelist.txt 2>/dev/null
 
