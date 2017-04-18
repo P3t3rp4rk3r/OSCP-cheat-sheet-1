@@ -186,7 +186,7 @@ grep -l -i pass /var/log/*.log 2>/dev/null
 find / -maxdepth 10 -name *.conf -type f | grep -Hn pass; 2>/dev/null // searches for the string 'password' and output the line number
 find / -maxdepth 10 -name *etc* -type f | grep -Hn pass; 2>/dev/null  //as above, but in *etc*
 
-  ## ls commaands
+  ## ls commands
 find / -perm -4000 -type f 2>/dev/null      //Find SUID files
 find / -uid 0 -perm -4000 -type f 2>/dev/null   //Find SUID files owned by root
 find / -perm -2000 -type f 2>/dev/null      // Find files with GUID bit set
@@ -293,6 +293,8 @@ snmpget -v 1 -c public IP
 snmpwalk -v 1 -c public IP
 snmpbulkwalk -v2c -c public -Cn0 -Cr10 IP
 onesixtyone -c /usr/share/wordlists/dirb/small.txt 192.168.1.200  // find communities with bruteforce
+for i in $(cat /usr/share/wordlists/metasploit/unix_users.txt);do snmpwalk -v 1 -c $i 192.168.1.200;done| grep -e "Timeout" // find communities with bruteforce
+
 
  == PHP ==
 ## Read PHP source code with php://filter
