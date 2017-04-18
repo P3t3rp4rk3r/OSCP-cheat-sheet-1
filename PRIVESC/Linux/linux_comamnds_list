@@ -280,7 +280,9 @@ ls -alh /var/log/samba/
 # auth.log, boot, btmp, daemon.log, debug, dmesg, kern.log, mail.info, mail.log, mail.warn, messages, syslog, udev, wtmp
 
 ## Search for specific strings inside a file
+file ./somefile   ## file info
 strings ./*.txt | grep password
+
 grep -l -i pass /var/log/*.log 2>/dev/null
 find / -maxdepth 10 -name *.conf -type f | grep -Hn pass; 2>/dev/null // searches for the string 'password' and output the line number
 find / -maxdepth 10 -name *etc* -type f | grep -Hn pass; 2>/dev/null  //as above, but in *etc*
@@ -290,6 +292,9 @@ grep -i user [filename]
 grep -i pass [filename]
 grep -C 5 "password" [filename]
 find . -name "*.php" -print0 | xargs -0 grep -i -n "var $password"   # Joomla 
+hexeditor ./file
+objdump -D -M intel ./file
+objdump -D -M x86-64 ./file >> dump64.file
 
 cat /var/apache2/config.inc
 cat /var/lib/mysql/mysql/user.MYD 
@@ -443,6 +448,8 @@ find / -name nc*
 find / -name netcat*
 find / -name tftp* 
 find / -name ftp 
+
+
 
 
 ## Finding exploit code
