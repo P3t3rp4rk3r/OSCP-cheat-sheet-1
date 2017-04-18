@@ -185,7 +185,8 @@ find /var/log -type f -exec ls -la {} ; 2>/dev/null List files in specified dire
 find /var/log -name *.log -type f -exec ls -la {} ; 2>/dev/null List .log files in specified directory (/var/log)
 find /etc/ -maxdepth 1 -name .conf -type f -exec ls -la {} ; 2>/dev/null List .conf files in /etc (recursive 1 level)
 ls -la /etc/.conf As above
-lsof -i -n List open files (output will depend on account privileges)
+lsof -i -n  ## List open files (output will depend on account privileges)
+lsof -u root  ## lists all open files and processes by user root
 
 ## Which configuration files can be written in /etc/? Able to reconfigure a service?
 ls -aRl /etc/ | awk '$1 ~ /^.*w.*/' 2>/dev/null     # Anyone
