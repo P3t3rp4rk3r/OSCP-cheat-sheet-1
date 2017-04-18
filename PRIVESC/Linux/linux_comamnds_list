@@ -206,7 +206,7 @@ find / -perm -o+x -type d 2>/dev/null    # world-executable folders
 find / \( -perm -o+w -perm -o+x \) -type d 2>/dev/null   # world-writeable & executable folders
 
 
-Any "problem" files? Word-writeable, "nobody" files
+## Any "problem" files? Word-writeable, "nobody" files
 find / -xdev -type d \( -perm -0002 -a ! -perm -1000 \) -print   # world-writeable files
 find /dir -xdev \( -nouser -o -nogroup \) -print   # Noowner files
 
@@ -282,6 +282,7 @@ ls -alh /var/log/samba/
 ## Search for specific strings inside a file
 file ./somefile   ## file info
 strings ./*.txt | grep password
+find / -name “*.log” |xargs grep -i pass
 
 grep -l -i pass /var/log/*.log 2>/dev/null
 find / -maxdepth 10 -name *.conf -type f | grep -Hn pass; 2>/dev/null // searches for the string 'password' and output the line number
