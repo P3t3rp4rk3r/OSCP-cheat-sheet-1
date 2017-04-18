@@ -227,6 +227,7 @@ skipfish -o 202 http://192.168.1.202/wordpress   ## Using the given directory fo
 
   == SQL ==
 sqlmap -u "http://192.168.56.129/?page=login" -a --level=5
+hexorbase  ##MySql, Oracle, PostgreSQL, SQLlite, MS-Sql browser
 
   == SMB NETBIOS== 
 enum4linux target
