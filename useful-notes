@@ -1,0 +1,18 @@
+Never assume anything
+Do not overthink it.
+AccessChk can be bad. See https://forums.offensive-security.com/showthread.php?t=6523
+Take snapshots of the VM
+Some machines have multiple IPs and different hostnames for each IP. See https://forums.offensive-security.com/forumdisplay.php?f=106
+Always think about proxychains
+Try harder
+Enumerate some more (UDP ?)
+If you want to wget something from your machine first make sure that apache (python web server) is running
+If you want to load a php webshell from your server make sure that php is not running on your box .. or you found a complicated way to your local root .. congratulations
+When transferring files with FTP, use binary instead of ASCII:
+    ftp> open 192.168.13.203
+    ftp> binary
+    200 Type set to I.
+    ftp> put plink2.exe
+
+RAM forensics
+tcdump
