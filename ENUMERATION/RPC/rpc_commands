@@ -1,0 +1,6 @@
+rpcinfo -p 192.x.x.x
+nmap -sV --script=nfs-ls 192.168.44.133  //same result as rpcinfo
+nmap -sV --script=nfs-* 192.168.44.133 // all nfs scripts
+
+#enumerate NFS shares
+showmount -e 192.168.56.103
