@@ -309,4 +309,6 @@ curl http://192.168.0.105/?page=php://filter/convert.base64-encode/resource=uplo
 exiftool somephoto.png
 steghide extract -sf ./file.wav
 
+# Connect to IMAP SSL
+openssl s_client -connect 192.168.44.133:993 -crlf
 
