@@ -1,1 +1,10 @@
 nmap -sV --script=nfs-* 192.168.44.133
+
+showmount -e 192.168.1.72
+mount -t nfs 192.168.1.72:/home/vulnix /tmp/mnt -nolock
+
+  - If you see any NFS related ACL port open, see /etc/exports
+  2049/tcp  nfs_acl
+# /etc/exports: the access control list for filesystems which may be exported
+#		to NFS clients.  See exports(5).
+
