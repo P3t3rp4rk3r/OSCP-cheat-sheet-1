@@ -1,0 +1,4 @@
+#!/bin/bash
+#scan the network with fping
+
+for ip in $(seq 1 254);do fping 10.11.1.$ip >> fping.txt;done;grep alive ./fping.txt
