@@ -1,0 +1,3 @@
+
+
+nmap --script=*ftp* --script-args=unsafe=1 -p 20,21 10.11.1.8
