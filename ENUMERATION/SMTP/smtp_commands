@@ -1,1 +1,2 @@
 smtp-user-enum  //in Kali
+smtp-user-enum -M VRFY -U /usr/share/wordlists/metasploit/unix_users.txt -t 10.11.1.22
