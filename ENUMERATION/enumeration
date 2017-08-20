@@ -236,6 +236,8 @@ nbtscan -r 192.168.11.0/24
 nmblookup -A target
 smbclient //MOUNT/share -I target -N
 rpcclient -U "" target
+smbmap -u "" -p "" -d MYGROUP -H 10.11.1.22
+
 
 
 ## NetBIOS NullSession enumeration
@@ -289,7 +291,7 @@ xprobe2 -v -p udp:161:open 192.168.1.200
 msf >  use auxiliary/scanner/snmp/snmp_login
 msf > use auxiliary/scanner/snmp/snmp_enum
 
-snmp-check -t 192.168.1.2 -c public
+snmp-check 192.168.1.2 -c public
 snmpget -v 1 -c public IP
 snmpwalk -v 1 -c public IP
 snmpbulkwalk -v2c -c public -Cn0 -Cr10 IP
