@@ -1,0 +1,9 @@
+
+# Tool for bruteforcing steghide password autentication
+# crashes when using '
+
+git clone https://github.com/Va5c0/Steghide-Brute-Force-Tool.git
+cd Steghide-Brute-Force-Tool/
+chmod +x ./steg_brute.py
+pip install progressbar
+python ./steg_brute.py -b -d /usr/share/wordlists/rockyou.txt -f cruise-114152_1280.jpg
