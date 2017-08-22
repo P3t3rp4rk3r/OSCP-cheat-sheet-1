@@ -1,0 +1,22 @@
+
+
+Simple Python servers:
+
+
+    == HTTP ==
+    
+-- python_http_server.py --
+
+import SimpleHTTPServer
+import SocketServer
+PORT = 8000
+Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
+httpd = SocketServer.TCPServer(("", PORT), Handler)
+print "serving at port", PORT
+httpd.serve_forever()
+
+
+
+    == FTP ==
+apt-get install python-pyftpdlib 
+python -m pyftpdlib -p 21
