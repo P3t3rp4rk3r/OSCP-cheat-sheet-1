@@ -246,7 +246,8 @@ smbmap -u "" -p "" -d MYGROUP -H 10.11.1.22
 ./enum4linux -a 192.168.1.1
 
 ## NMAP SMB scripts
-nmap --script smb-* 192.168.10.55 
+nmap --script smb-* --script-args=unsafe=1 192.168.10.55 
+
 ##  ls -lh /usr/share/nmap/scripts/smb*	
 smb-brute.nse
 smb-enum-domains.nse
@@ -310,6 +311,7 @@ curl http://192.168.0.105/?page=php://filter/convert.base64-encode/resource=uplo
  == STENOGRAPHICS / EXIF ==
 exiftool somephoto.png
 steghide extract -sf ./file.wav
+steghide extract -sf ./image.jpg
 
 # Connect to IMAP SSL
 openssl s_client -connect 192.168.44.133:993 -crlf
