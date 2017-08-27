@@ -171,6 +171,12 @@ arp -a
 #display routing table
 routeprint
 
+#find out if Windows is 32 or 64 bits from cmd
+wmic os get osarchitecture
+
+#get general system info from cmd
+systeminfo
+
 
   == LINUX ==
 ## Use LinuxEnum.sh script
