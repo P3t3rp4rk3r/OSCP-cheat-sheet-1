@@ -11,8 +11,8 @@ dir c:\unattend.xml
 
 type c:\sysprep.inf
 type c:\sysprep\sysprep.xml
-dir c:*vnc.ini /s /b
-dir c:*ultravnc.ini /s /b
+dir c:\*vnc.ini /s /b
+dir c:\*ultravnc.ini /s /b
 dir c:\ /s /b | findstr /si *vnc.ini
 
 findstr /S pass *.txt *.xml *.ini  // in C:\
