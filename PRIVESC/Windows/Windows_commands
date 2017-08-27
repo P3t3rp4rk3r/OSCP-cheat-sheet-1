@@ -52,6 +52,9 @@ mput *   ##confirm with yes on all files . Maybe /y will help ?
 ## Use the tools in https://github.com/crsftw/OSCP-cheat-sheet/tree/master/privesc/tools_win
 ## use the -accepteula to avoid the GUI asking to accept...EULA
 ##  PsExec.exe –accepteula
+
+PsExec64.exe -accepteula \\10.11.1.49 -u user -p somepassword cmd
+
     PsExec - execute processes remotely
     PsFile - shows files opened remotely
     PsGetSid - display the SID of a computer or a user
