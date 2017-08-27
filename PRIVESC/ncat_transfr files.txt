@@ -1,0 +1,7 @@
+
+
+#On sending machine
+nc -w 3 [destination] 1234 < send.file
+
+#on receiving end:
+cmd /c nc.exe -l -v -p 1234 > PsExec.exe
