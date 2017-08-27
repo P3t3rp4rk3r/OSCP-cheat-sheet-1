@@ -54,6 +54,7 @@ mput *   ##confirm with yes on all files . Maybe /y will help ?
 ##  PsExec.exe –accepteula
 
 PsExec64.exe -accepteula \\10.11.1.49 -u user -p somepassword cmd
+powershell -ExecutionPolicy Bypass C:\Users\Public\PsExec.exe -accepteula \\localhost -u alice -p aliceishere cmd
 
     PsExec - execute processes remotely
     PsFile - shows files opened remotely
