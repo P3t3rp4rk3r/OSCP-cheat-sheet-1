@@ -174,8 +174,23 @@ routeprint
 #find out if Windows is 32 or 64 bits from cmd
 wmic os get osarchitecture
 
+#find out Windows version
+systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
+
 #get general system info from cmd
 systeminfo
+
+#get username 
+echo %username%
+
+#display existing users
+net users
+
+#show firewall state. From WinXP upwards
+netsh firewall show state
+
+#firewall config
+netsh firewall show config
 
 
   == LINUX ==
