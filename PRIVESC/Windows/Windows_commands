@@ -17,6 +17,9 @@ dir c:\ /s /b | findstr /si *vnc.ini
 
 findstr /S pass *.txt *.xml *.ini  // in C:\
 
+#find out what groups a user is part of
+net user <userName> /domain | find "Group"
+
     == Windows Registry ==
 
 VNC Stored:
