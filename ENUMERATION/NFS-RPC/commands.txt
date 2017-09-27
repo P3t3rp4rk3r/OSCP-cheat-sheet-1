@@ -11,9 +11,9 @@ mount -t nfs 192.168.1.72:/home/vulnix /tmp/mnt -nolock
 #enumerate NFS shares
 showmount -e 192.168.56.103
 
-- If you see any NFS related ACL port open, see /etc/exports
-  2049/tcp  nfs_acl
-  
+# If you see any NFS related ACL port open, see /etc/exports
+#   2049/tcp  nfs_acl
 # /etc/exports: the access control list for filesystems which may be exported to NFS clients.  See exports(5).
 
+READ:
 https://pentestlab.blog/tag/rpc/
