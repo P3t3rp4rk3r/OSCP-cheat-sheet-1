@@ -436,7 +436,6 @@ mknod backpipe p ; nc -l -p 8080 < backpipe | nc 10.1.1.251 80 >backpipe    # Po
 mknod backpipe p ; nc -l -p 8080 0 & < backpipe | tee -a inflow | nc localhost 80 | tee -a outflow 1>backpipe    # Proxy (Port 80 to 8080)
 mknod backpipe p ; nc -l -p 8080 0 & < backpipe | tee -a inflow | nc localhost 80 | tee -a outflow & 1>backpipe    # Proxy monitor (Port 80 to 8080)
 
-
 ## Is tunnelling possible? Send commands locally, remotely
 ssh -D 127.0.0.1:9050 -N [username]@[ip] 
 proxychains ifconfig
@@ -460,9 +459,6 @@ find / -name nc*
 find / -name netcat*
 find / -name tftp* 
 find / -name ftp 
-
-
-
 
 ## Finding exploit code
 http://www.exploit-db.com
