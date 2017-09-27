@@ -1,0 +1,14 @@
+  == SNMP ==
+nmap -sU -p 161 --script=*snmp* 192.168.1.200
+xprobe2 -v -p udp:161:open 192.168.1.200
+
+msf >  use auxiliary/scanner/snmp/snmp_login
+msf > use auxiliary/scanner/snmp/snmp_enum
+
+snmp-check 192.168.1.2 -c public
+snmpget -v 1 -c public IP
+snmpwalk -v 1 -c public IP
+snmpbulkwalk -v2c -c public -Cn0 -Cr10 IP
+onesixtyone -c /usr/share/wordlists/dirb/small.txt 192.168.1.200  // find communities with bruteforce
+
+for i in $(cat /usr/share/wordlists/metasploit/unix_users.txt);do snmpwalk -v 1 -c $i 192.168.1.200;done| grep -e "Timeout" // find communities with bruteforce
