@@ -1,0 +1,9 @@
+In computer networking, Server Message Block (SMB), one version of which was also known as Common Internet File System (CIFS, /ˈsɪfs/), operates as an application-layer network protocol[3] mainly used for providing shared access to files, printers, and serial ports and miscellaneous communications between nodes on a network. It also provides an authenticated inter-process communication mechanism. Most usage of SMB involves computers running Microsoft Windows, where it was known as "Microsoft Windows Network" before the subsequent introduction of Active Directory. Corresponding Windows services are LAN Manager Server (for the server component) and LAN Manager Workstation (for the client component).
+
+SMB can run on top of the session (and lower) network layers in several ways:
+Directly over TCP, port 445 via the NetBIOS API, which in turn can run on several transports:[6]
+On UDP ports 137, 138 & TCP ports 137, 139 (NetBIOS over TCP/IP);
+On several legacy protocols such as NBF, IPX/SPX.
+The SMB "Inter-Process Communication" (IPC) system provides named pipes and was one of the first inter-process mechanisms commonly available to programmers that provides a means for services to inherit the authentication carried out when a client[clarification needed] first connects to an SMB server.[citation needed]
+
+https://en.wikipedia.org/wiki/Server_Message_Block
