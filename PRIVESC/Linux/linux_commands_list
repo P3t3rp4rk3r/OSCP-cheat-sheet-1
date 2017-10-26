@@ -460,6 +460,19 @@ find / -name netcat*
 find / -name tftp* 
 find / -name ftp 
 
+#copy files with SSH
+scp username@b:/path/to/file /path/to/destination   //while being logged into A
+scp /path/to/file username@a:/path/to/destination  //while being logged into B
+
+#compile C with gcc
+gcc ./test.c -o ceva
+http://www.wikihow.com/Compile-a-C-Program-Using-the-GNU-Compiler-(GCC)
+
+#clear history, iptables and logs
+iptables -F; history -c; find ./ -name “*.log” |xargs rm -f
+
+
+
 ## Finding exploit code
 http://www.exploit-db.com
 http://1337day.com
