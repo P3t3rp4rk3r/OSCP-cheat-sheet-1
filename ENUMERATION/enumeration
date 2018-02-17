@@ -244,6 +244,12 @@ joomscan -u http://192.168.230.150:8081
 ## scan Wordpress
 wpscan domain.com
 
+## enumerate Wordpress users
+wpscan --url http://10.10.10.2 --enumerate u
+
+## bruteforce Wordpress user's password
+wpscan --url 10.10.10.2/secret --wordlist /usr/share/wordlists/dirb/big.txt --threads 2
+
 ## scan a web appliction with nikto
 nikto -C all -h http://IP
 
