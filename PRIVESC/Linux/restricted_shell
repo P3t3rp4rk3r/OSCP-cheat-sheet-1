@@ -30,6 +30,8 @@
    
    == SPAWN a shell ==
    
+   python -c 'import pty; pty.spawn("/bin/bash")'
+   
    - open vi or vim and type:
    :set shell=/bin/bash
    
