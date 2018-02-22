@@ -376,5 +376,8 @@ tr -cd '0-9\012' < ./myfile.sorted > myfile.sorted2
 #keep line/words with more than 32 characters/bits  (for MD5 filtering)
 awk 'length>=32' ./list.txt > ./list.sorted
 
+# newline after each blank space
+sed -i 's/ /\n/g' ./test
+
 
 
