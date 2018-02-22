@@ -7,6 +7,15 @@ smbclient //MOUNT/share -I target -N
 rpcclient -U "" target
 smbmap -u "" -p "" -d MYGROUP -H 10.11.1.22
 
+# identify SMB version
+msf auxiliary(scanner/smb/smb_version) > use auxiliary/scanner/smb/smb_version
+msf auxiliary(scanner/smb/smb_version) > set RHOSTS 192.168.31.142
+RHOSTS => 192.168.31.142
+msf auxiliary(scanner/smb/smb_version) > run
+
+[*] 192.168.31.142:139    - Host could not be identified: Unix (Samba 2.2.1a)
+
+
     == NetBIOS NullSession enumeration ==
 # This  feature  exists  to  allow  unauthenticated  machines  to  obtain  browse  lists  from  other  
 # Microsoft   servers. Enum4linux is a wrapper  built on top of smbclient,rpcclient, net and nmblookup
