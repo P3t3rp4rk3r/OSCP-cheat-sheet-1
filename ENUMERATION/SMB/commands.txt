@@ -1,25 +1,34 @@
     == SMB NETBIOS== 
-enum4linux target
+enum4linux x.x.x.x
 nmap -v -p 139,445 -oG smb.txt 192.168.11.200-254
 nbtscan -r 192.168.11.0/24
 nmblookup -A target
 smbclient //MOUNT/share -I target -N
-rpcclient -U "" target
+rpcclient -U "" target // connect as blank user /nobody
 smbmap -u "" -p "" -d MYGROUP -H 10.11.1.22
 
-# identify SMB version
+## SMB version
 msf auxiliary(scanner/smb/smb_version) > use auxiliary/scanner/smb/smb_version
 msf auxiliary(scanner/smb/smb_version) > set RHOSTS 192.168.31.142
 RHOSTS => 192.168.31.142
 msf auxiliary(scanner/smb/smb_version) > run
-
 [*] 192.168.31.142:139    - Host could not be identified: Unix (Samba 2.2.1a)
 
+## Existing users
+msf auxiliary(scanner/smb/smb_lookupsid) > use auxiliary/scanner/smb/smb_lookupsid
+msf auxiliary(scanner/smb/smb_lookupsid) > set RHOSTS 192.168.31.142
+RHOSTS => 192.168.31.142
+msf auxiliary(scanner/smb/smb_lookupsid) > run
+[*] 192.168.31.142:139    - PIPE(LSARPC) LOCAL(MYGROUP - 5-21-4157223341-3243572438-1405127623) DOMAIN(MYGROUP - )
+[*] 192.168.31.142:139    - TYPE=0 NAME=Administrator rid=500
 
     == NetBIOS NullSession enumeration ==
 # This  feature  exists  to  allow  unauthenticated  machines  to  obtain  browse  lists  from  other  
 # Microsoft   servers. Enum4linux is a wrapper  built on top of smbclient,rpcclient, net and nmblookup
 enum4linux -a 192.168.1.1
+
+## upload file
+smbclient //192.168.31.142/ADMIN$ -U "nobody"%"somepassword" -c "put 40280.py"
 
   == NMAP SMB scripts ==
 nmap --script smb-* --script-args=unsafe=1 192.168.10.55 
