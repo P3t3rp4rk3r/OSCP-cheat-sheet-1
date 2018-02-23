@@ -14,6 +14,9 @@ RHOSTS => 192.168.31.142
 msf auxiliary(scanner/smb/smb_version) > run
 [*] 192.168.31.142:139    - Host could not be identified: Unix (Samba 2.2.1a)
 
+## SMB brute force
+use auxiliary/scanner/smb/smb_login
+
 ## Existing users
 msf auxiliary(scanner/smb/smb_lookupsid) > use auxiliary/scanner/smb/smb_lookupsid
 msf auxiliary(scanner/smb/smb_lookupsid) > set RHOSTS 192.168.31.142
