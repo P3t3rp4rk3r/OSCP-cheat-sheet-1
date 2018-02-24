@@ -167,3 +167,33 @@ SSH to Meterpreter: https://daemonchild.com/2015/08/10/got-ssh-creds-want-meterp
 $output = shell_exec('ls ../../');
 echo "<pre>$output</pre>";
 ?>
+
+*TIPS*:
+-----
+- run 'env' command to see PATH and how profile is configured.
+- list the PATH directories with 'echo /some/folder/*' or just use ls.
+- see what commands you can use from above and iterate through other accessible folders
+
+Change PATH or SHELL Environment Variables
+-----
+'export -p' to see the exported variables in the shell.
+    -x - is execute only
+    -w - is write too <<<<<<
+   
+If the SHELL variable is writeable, you can simply set it to your shell of choice (i.e. sh, bash, ksh, etc...).
+If the PATH variable is writeable, then you'll be able to set it to any directory you want. I recommend setting it to one that has commands vulnerable to shell escapes.
+   
+*COPY FILES*
+-----
+ls -alh /some/folder from $PATH and see if you can write in there
+If yes, then simply copy commands into the PATH that have known shell escapes. OR write your script and write it here.
+   
+   - copy files to your home directory and try to execute.
+   -- if not able to copy, mount devices or filesystems
+   -- copy using SCP, FTP, rsync
+ ----- 
+Find other writable directories and upload your script there.
+-----
+Create a symbolic link in a directory where you have write access.
+
+
