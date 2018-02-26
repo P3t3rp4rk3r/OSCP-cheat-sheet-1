@@ -18,7 +18,7 @@ reset          // attacking machine
 -----
 export TERM=xterm-256color //on victim machine
 export SHELL=BASH          //on victim machine
-stty rows 38 columns 116   //on victim machine
+stty rows 55 columns 205   //on victim machine. See stty -a
 -----
 
             == Spawning a TTY Shell - Break out of Jail or limited shell ==
