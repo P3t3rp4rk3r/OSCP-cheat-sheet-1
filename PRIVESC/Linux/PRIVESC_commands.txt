@@ -471,7 +471,8 @@ http://www.wikihow.com/Compile-a-C-Program-Using-the-GNU-Compiler-(GCC)
 #clear history, iptables and logs
 iptables -F; history -c; find ./ -name “*.log” |xargs rm -f
 
-
+# Postfix version
+postconf -d | grep mail_vers
 
 ## Finding exploit code
 http://www.exploit-db.com
