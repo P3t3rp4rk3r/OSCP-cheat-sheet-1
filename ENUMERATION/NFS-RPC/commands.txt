@@ -17,3 +17,7 @@ showmount -e 192.168.56.103
 
 READ:
 https://pentestlab.blog/tag/rpc/
+
+See root squashing
+https://haiderm.com/linux-privilege-escalation-using-weak-nfs-permissions/
+
