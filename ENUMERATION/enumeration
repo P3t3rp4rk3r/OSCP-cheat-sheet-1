@@ -73,6 +73,17 @@ dirb http://192.168.x.x
 ## WEB page headers
 nmap --script=http-headers 192.168.1.0/24
 
+## WEb page headers
+root@kali:~# nc -nvv 192.168.31.149 80
+(UNKNOWN) [192.168.31.149] 80 (http) open
+HEAD / HTTP/1.0
+
+HTTP/1.1 200 OK
+Date: Tue, 06 Mar 2018 11:47:38 GMT
+Server: Apache/2.4.7 (Ubuntu)
+Last-Modified: Sun, 12 Nov 2017 16:12:12 GMT
+ETag: "512-55dcb6aaa2f50"
+
 ## WEB page titles from a subnet of IPs
 nmap --script http-title -sV -p 80 192.168.1.0/24  
 
