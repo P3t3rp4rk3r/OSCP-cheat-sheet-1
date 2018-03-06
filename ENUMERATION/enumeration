@@ -2,13 +2,9 @@
   == IP DISCOVERY ==
 netdiscover -r 10.0.2.0/24
   
-  == DOMAIN info: ==
-whois domain.com
-whois x.x.x.x
-http://netcraft.com/       //domain and hosting information
-https://archive.org/web/   //Wayback machine
-
 ## NMAP Service and OS Detection
+nmap -sT -A -sV --version-intensity 6 -p- 192.168.31.149
+
 nmap -sTU -A 192.168.1.1   // Os and services for TCP and UDP
 nmap -sV 192.168.1.1    // service detection
 nmap -sV --version-intensity 5 192.168.1.1 // service detection agressive. 0 is less agressive
@@ -37,6 +33,12 @@ us -H -mU -Iv 192.168.56.101 -p 1-65535   ## UDP scan
 
 ## Locate NSE scripts
 locate nse | grep script
+
+  == DOMAIN info: ==
+whois domain.com
+whois x.x.x.x
+http://netcraft.com/       //domain and hosting information
+https://archive.org/web/   //Wayback machine
 
    == HTTP finderprinting ==
 wget http://www.net-square.com/_assets/httprint_linux_301.zip && unzip httprint_linux_301.zip
