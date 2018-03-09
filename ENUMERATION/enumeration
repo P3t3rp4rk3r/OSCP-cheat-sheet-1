@@ -1,6 +1,7 @@
 
   == IP DISCOVERY ==
 netdiscover -r 10.0.2.0/24
+nmap -sP 10.195.0.0/16 // ping discovery scan
   
 ## NMAP Service and OS Detection
 nmap -sT -A -sV --version-intensity 6 -p- 192.168.31.149
