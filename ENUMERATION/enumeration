@@ -274,12 +274,12 @@ skipfish -o 202 http://192.168.1.202/wordpress   ## Using the given directory fo
 
 ## LFI, RFI, RCE
 uniscan -u http://192.168.44.134:10000/ -qweds
-### Test for LFI
 
-#Harvest links from a page (to test for LFI)
+### Test for LFI
+# Harvest links from a page (to test for LFI)
 fimap -H -u "http://192.168.56.129" -d 3 -w /tmp/urllist
 #test for LFI using harvested links
-fimap -H -u "http://192.168.56.129" -d 3 -w /tmp/urllist
+fimap -m -l /tmp/urllist
 
   == SQL ==
 sqlmap -u "http://192.168.56.129/?page=login" -a --level=5
