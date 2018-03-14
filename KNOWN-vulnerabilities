@@ -84,10 +84,13 @@ use exploit/windows/smb/ms08_067_netapi
 Standalone exploit:
 https://www.exploit-db.com/exploits/7104/
 
-=== SMB Eternalblue: ===
+=== SMB Eternalblue, MS17-010 ===
 windows/smb/ms17_010_eternalblue
 windows/smb/ms17_010_psexec
-https://www.rapid7.com/db/modules/exploit/windows/smb/ms17_010_eternalblue
+Microsoft Windows Windows 7/2008 R2 (x64) - 'EternalBlue' SMB Remote Code Execution (MS17-010)                                                                            | win_x86-64/remote/42031.py
+Microsoft Windows Windows 8/2012 R2 (x64) - 'EternalBlue' SMB Remote Code Execution (MS17-010)                                                                            | win_x86-64/remote/42030.py
+
+windows/smb/ms09_050_smb2_negotiate_func_index
 
 === MS03-026 Microsoft RPC DCOM Interface Overflow* // *CVE-2003-0352 ===
 -----
