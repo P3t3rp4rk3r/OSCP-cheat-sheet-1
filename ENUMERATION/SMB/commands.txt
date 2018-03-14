@@ -74,4 +74,5 @@ smbclient \\192.168.13.236\some-share -o user=root,pass=root,workgroup=BOB
 mount -t auto --source //192.168.31.147/kathy --target /tmp/smb/ -o username=root,workgroup=WORKGROUP
 
 # mount SMB shares in Windows (via cmd)
+C:\WINDOWS\system32> dir \\Computer_name\wwwroot                              
 net use X: \\<server>\<sharename> /USER:<domain>\<username> <password> /PERSISTENT:YES
