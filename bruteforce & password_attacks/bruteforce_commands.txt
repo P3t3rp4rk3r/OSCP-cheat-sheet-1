@@ -1,4 +1,6 @@
-
+# convert hashes to uppercase for LM hashes
+tr a-z A-Z < ./ralph2.txt
+ 
   ## SMB bruteforece
 nmap --script=smb-brute.nse 192.x.x.x
 nmap -sV -p 445 --script smb-brute 192.168.13.200-254
